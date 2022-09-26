@@ -1,0 +1,63 @@
+{
+    "env": {
+      "browser": true,
+      "es2021": true,
+      "jest": true
+    },
+    "extends": [
+      "plugin:react/recommended",
+      // "react-app",
+      // "react-app/jest",
+      // "airbnb",
+      // "airbnb-typescript",
+      "plugin:prettier/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      },
+      "ecmaVersion": "latest",
+      "sourceType": "module",
+      "project": "./tsconfig.json"
+    },
+    "plugins": ["react", "@typescript-eslint", "prettier"],
+    "ignorePatterns": [
+      "postcss.config.js",
+      "tailwind.config.js",
+      "next.config.js"
+    ],
+    "rules": {
+      "import/prefer-default-export": "off",
+      "no-tabs": [
+        "error",
+        {
+          "allowIndentationTabs": true
+        }
+      ],
+      "no-console": "warn",
+      "no-param-reassign": ["warn"],
+      "no-return-assign": "warn",
+      "radix": "warn",
+      "array-callback-return": "off",
+      "consistent-return": "warn",
+      "no-plusplus": "off",
+      "react/no-danger": "off",
+      "react/react-in-jsx-scope": "off",
+      "react/function-component-definition": "off",
+      "react/no-unescaped-entities": "off",
+      "no-mixed-spaces-and-tabs": ["off", "smart-tabs"],
+      "react/require-default-props": "off",
+      "react/jsx-props-no-spreading": "off",
+      "react/no-array-index-key": "off",
+      "react/no-unstable-nested-components": "off",
+      "react/jsx-no-constructed-context-values": "off",
+      "jsx-a11y/click-events-have-key-events": "off",
+      "jsx-a11y/no-noninteractive-element-interactions": "off",
+      "jsx-a11y/anchor-is-valid": "off",
+      "jsx-a11y/no-static-element-interactions": "off",
+      "@typescript-eslint/no-shadow": "warn",
+      "@typescript-eslint/naming-convention": "off"
+    }
+  }
+  

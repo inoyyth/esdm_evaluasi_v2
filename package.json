@@ -5,20 +5,48 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "NODE_ENV=development node server.js",
+    "lint": "eslint --ext .ts,.tsx ./",
+    "lint:fix": "eslint --ext .ts,.tsx ./ --fix --quiet ."
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.8.5",
+    "@types/jsonwebtoken": "^8.5.9",
+    "@types/lodash": "^4.14.185",
+    "antd": "^4.23.2",
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.2",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
     "next": "12.3.1",
+    "next-cookies": "^2.0.3",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-redux": "^8.0.4",
+    "redux": "^4.2.0",
+    "survey-react": "^1.9.50",
+    "survey-react-ui": "^1.9.50"
   },
   "devDependencies": {
     "@types/node": "18.7.21",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
-    "eslint": "8.24.0",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.30.6",
+    "autoprefixer": "^10.4.7",
+    "eslint": "^8.0.1",
+    "eslint-config-airbnb": "^19.0.4",
     "eslint-config-next": "12.3.1",
-    "typescript": "4.8.3"
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-standard-with-typescript": "^23.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-jsx-a11y": "^6.6.0",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-react": "^7.31.8",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^2.7.1",
+    "typescript": "*"
   }
 }
