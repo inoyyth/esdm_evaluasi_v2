@@ -4,13 +4,18 @@ import cookies from "next-cookies"
 import jwt from "jsonwebtoken"
 import { Provider } from "react-redux"
 import { store } from "app/store"
-import { Breadcrumb, Button, Col, Layout, Row } from "antd"
+import { Breadcrumb, Col, Layout, Row } from "antd"
 import Header from "@components/Utility/HeaderLayout"
 import Footer from "@components/Utility/FooterLayout"
 import Menus from "@components/Utility/Menus"
-import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons"
-import { useState } from "react"
-import React from "react"
+import dynamic from "next/dynamic"
+
+const DynamicDataTable = dynamic(
+  () => import("@components/DataTable/survey/PenyelenggaraDiklatDatatable"),
+  {
+    ssr: false,
+  }
+)
 
 type Props = {
   children: any
@@ -18,14 +23,10 @@ type Props = {
 }
 
 const { Content, Sider } = Layout
+const categoryId = 2
 
-const Home: NextPage<Props> = (props: Props) => {
+const ListSurvey: NextPage<Props> = (props: Props) => {
   const { user: esdm_survey } = props
-  const [collapsed, setCollapsed] = useState<boolean>(false)
-  const toggleCollapsed = () => {
-    setCollapsed(!collapsed)
-  }
-
   return (
     <Provider store={store}>
       <Row>
@@ -39,7 +40,8 @@ const Home: NextPage<Props> = (props: Props) => {
             <Row>
               <Col span={24}>
                 <Breadcrumb style={{ margin: "16px 0" }}>
-                  <Breadcrumb.Item>Home</Breadcrumb.Item>
+                  <Breadcrumb.Item>Survey</Breadcrumb.Item>
+                  <Breadcrumb.Item>Penyelenggaraan Diklat</Breadcrumb.Item>
                 </Breadcrumb>
               </Col>
             </Row>
@@ -49,18 +51,16 @@ const Home: NextPage<Props> = (props: Props) => {
                   className="site-layout-background"
                   width="100%"
                   collapsible={false}
-                  collapsed={collapsed}
-                  onCollapse={toggleCollapsed}
                 >
                   <Menus
-                    defaultSelectedKeys={`dashboard`}
-                    defaultOpenKeys="dashboard"
+                    defaultSelectedKeys={`penyelenggaraDiklat`}
+                    defaultOpenKeys={`survey`}
                   />
                 </Sider>
               </Col>
               <Col span={20} xs={24} sm={19}>
                 <Content className="mx-0 mt-4 sm:mt-0 sm:mx-4 min-h-[200px]">
-                  CONTENT DASHBOARD HERE!!!
+                  <DynamicDataTable categoryId={categoryId} />
                 </Content>
               </Col>
             </Row>
@@ -82,9 +82,9 @@ export const getServerSideProps: GetServerSideProps<any> = async (
   const c: any = cookies(context)
   const authCookies: string = c["esdm_survey"]
   const jwtData: any = jwt.decode(authCookies)
-  console.log(authCookies)
+
   if (!isNil(authCookies)) {
-    // console.log(jwtData)
+    console.log(jwtData)
     return {
       props: {
         user: authCookies,
@@ -100,4 +100,4 @@ export const getServerSideProps: GetServerSideProps<any> = async (
   }
 }
 
-export default Home
+export default ListSurvey

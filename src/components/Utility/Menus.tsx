@@ -5,11 +5,12 @@ import axios, { AxiosError } from "axios"
 import { useRouter } from "next/router"
 
 type Props = {
-  pages: any
+  defaultSelectedKeys: any
+  defaultOpenKeys: any
 }
 
 const Menus: FunctionComponent<Props> = (props: Props) => {
-  const { pages } = props
+  const { defaultSelectedKeys, defaultOpenKeys } = props
   const router = useRouter()
 
   const logout: Function = async () => {
@@ -44,10 +45,31 @@ const Menus: FunctionComponent<Props> = (props: Props) => {
         label: "Survey",
         children: [
           {
-            key: "listSurvey",
-            label: "List Survey",
+            key: "tenagaPengajar",
+            label: "Tenaga Pengajar",
             onClick: (item) => {
-              router.push("/survey")
+              router.push("/survey/tenaga-pengajar")
+            },
+          },
+          {
+            key: "penyelenggaraDiklat",
+            label: "Penyelengaraan Diklat",
+            onClick: (item) => {
+              router.push("/survey/penyelenggara-diklat")
+            },
+          },
+          {
+            key: "surveyKepuasanMasyarakat",
+            label: "Survey Kepuasan Masyarakat",
+            onClick: (item) => {
+              router.push("/survey/survey-kepuasan-masyarakat")
+            },
+          },
+          {
+            key: "indexPersepsiKorupsi",
+            label: "Index Persepsi Korupsi",
+            onClick: (item) => {
+              router.push("/survey/index-persepsi-korupsi")
             },
           },
         ],
@@ -56,12 +78,13 @@ const Menus: FunctionComponent<Props> = (props: Props) => {
     return menu
   }
 
-  useEffect(() => {}, [props.pages])
+  useEffect(() => {}, [defaultSelectedKeys])
   return (
     <Menu
       mode="inline"
-      defaultSelectedKeys={[pages]}
-      defaultOpenKeys={[pages]}
+      theme="dark"
+      defaultSelectedKeys={[defaultSelectedKeys]}
+      defaultOpenKeys={[defaultOpenKeys]}
       style={{ height: "100%" }}
       items={menuItems()}
     />

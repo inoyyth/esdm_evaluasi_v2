@@ -53,19 +53,11 @@ const Login: FunctionComponent = () => {
           className="w-[500px] border-2 border-solid pr-12 pt-12"
         >
           <Form.Item
-            label="Email"
-            name="email"
-            rules={[{ required: true, message: "Mohon masukkan email!" }]}
+            label="NIP"
+            name="nik"
+            rules={[{ required: true, message: "Mohon masukkan NIK!" }]}
           >
             <Input />
-          </Form.Item>
-
-          <Form.Item
-            label="Password"
-            name="password"
-            rules={[{ required: true, message: "Mohon masukkan password!" }]}
-          >
-            <Input.Password />
           </Form.Item>
 
           <Form.Item
@@ -101,10 +93,10 @@ export const getServerSideProps: GetServerSideProps<any> = async (
   context: any
 ) => {
   const c: any = cookies(context)
-  const authCookies: string = c["token"]
+  const authCookies: string = c["esdm_survey"]
   const jwtData: any = jwt.decode(authCookies)
   console.log(jwtData)
-  if (!isNil(jwtData)) {
+  if (!isNil(authCookies)) {
     console.log(jwtData)
     return {
       props: {},

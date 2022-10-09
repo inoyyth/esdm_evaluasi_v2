@@ -25,7 +25,7 @@ const Survey: NextPage<Props> = (props: Props) => {
     <Provider store={store}>
       <Layout>
         <Header />
-        <Content style={{ padding: "0 50px" }}>
+        <Content style={{ padding: "0 16px" }}>
           <Breadcrumb style={{ margin: "16px 0" }}>
             <Breadcrumb.Item>Home</Breadcrumb.Item>
             <Breadcrumb.Item>List</Breadcrumb.Item>
@@ -36,9 +36,15 @@ const Survey: NextPage<Props> = (props: Props) => {
             style={{ padding: "24px 0" }}
           >
             <Sider className="site-layout-background" width={300}>
-              <Menus pages={`survey`} />
+              <Menus
+                defaultSelectedKeys={`survey`}
+                defaultOpenKeys="listSurvey"
+              />
             </Sider>
             <Content style={{ padding: "0 24px", minHeight: 280 }}>
+              <div className="text-center text-xl">
+                <h1>Evaluasi 1</h1>
+              </div>
               <SurveyComponent />
             </Content>
           </Layout>
@@ -56,11 +62,11 @@ export const getServerSideProps: GetServerSideProps<any> = async (
   const authCookies: string = c["token"]
   const jwtData: any = jwt.decode(authCookies)
 
-  if (!isNil(jwtData)) {
+  if (!isNil(authCookies)) {
     console.log(jwtData)
     return {
       props: {
-        user: jwtData.sub,
+        user: authCookies,
       },
     }
   } else {
