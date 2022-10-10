@@ -700,6 +700,11 @@ bootstrap-slider@^10.0.0:
   resolved "https://registry.yarnpkg.com/bootstrap-slider/-/bootstrap-slider-10.6.2.tgz#7341f468c012bdaa6a1d8625d989fdeb8ed7dd38"
   integrity sha512-8JTPZB9QVOdrGzYF3YgC3YW6ssfPeBvBwZnXffiZ7YH/zz1D0EKlZvmQsm/w3N0XjVNYQEoQ0ax+jHrErV4K1Q==
 
+bootstrap@^5.2.2:
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-5.2.2.tgz#834e053eed584a65e244d8aa112a6959f56e27a0"
+  integrity sha512-dEtzMTV71n6Fhmbg4fYJzQsw1N29hJKO1js5ackCgIpDcGid2ETMGC6zwSYw09v05Y+oRdQ9loC54zB1La3hHQ==
+
 brace-expansion@^1.1.7:
   version "1.1.11"
   resolved "https://registry.npmjs.org/brace-expansion/-/brace-expansion-1.1.11.tgz"
@@ -2097,6 +2102,11 @@ nouislider@^14.6.3:
   resolved "https://registry.yarnpkg.com/nouislider/-/nouislider-14.7.0.tgz#a71db0587c92567b6da1df57d251d3696d942362"
   integrity sha512-4RtQ1+LHJKesDCNJrXkQcwXAWCrC2aggdLYMstS/G5fEWL+fXZbUA9pwVNHFghMGuFGRATlDLNInRaPeRKzpFQ==
 
+nouislider@^15.6.1:
+  version "15.6.1"
+  resolved "https://registry.yarnpkg.com/nouislider/-/nouislider-15.6.1.tgz#957aa24a583aafbef9a4ac20098ceefa99245660"
+  integrity sha512-1T5AfeEMGrGM87UJ+qAHvauPfCe/woOjYV/o29fp21+XgGuGpkM1Udo7mPHnidu4+cxlj35rDBWKiA6Mefemrg==
+
 object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.npmjs.org/object-assign/-/object-assign-4.1.1.tgz"
@@ -3048,10 +3058,10 @@ survey-react@^1.9.50:
   resolved "https://registry.npmjs.org/survey-react/-/survey-react-1.9.50.tgz"
   integrity sha512-67JSqFqr27wgBf2VG0nQxozvYlfE0LLkHD6GNBmU4pPbN4Ukx7By520UY6JG8kNXNIZ9y0Q5jSTxXUN1aXRHNQ==
 
-surveyjs-widgets@^1.9.50:
-  version "1.9.50"
-  resolved "https://registry.yarnpkg.com/surveyjs-widgets/-/surveyjs-widgets-1.9.50.tgz#f262b1d9935c760862b103c5cbdb5af355b6010f"
-  integrity sha512-+GMrJyv9iqdckBvu/YytBZ9Hi8i6bd3cfxtHBp0cbVp1BwtGOkpAW9gZwbZkHnMecWs+EIVW5Pio8eBwaNTwyA==
+surveyjs-widgets@^1.9.52:
+  version "1.9.52"
+  resolved "https://registry.yarnpkg.com/surveyjs-widgets/-/surveyjs-widgets-1.9.52.tgz#b79880d0ae7e6e4e72ebbe979688b0f2f3216d4a"
+  integrity sha512-KtGWOvaPSPW+SQXZGoyYh2MFYHJr+t8B36h0jGlcEMZEdS/u/My3hWgn/vU44+e8MVphTHiAzxA2vnRKbH35hw==
   dependencies:
     bootstrap-slider "^10.0.0"
     easy-autocomplete "^1.3.5"

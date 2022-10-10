@@ -8,19 +8,33 @@ import { useRouter } from "next/router"
 
 type Props = {
   categoryId: number
+  userData: any
 }
 
-type Model = {
+export type Model = {
   id: string
-  judul_diklat: string
-  tgl_pelaksanaan_awal: string
-  tgl_pelaksanaan_selesai: string
-  tempat_diklat: string
-  jenis_diklat: string
+  judul: string
+  id_kategori: string
+  id_master_diklat: string
+  jadwal: {
+    waktu_mulai: string
+    waktu_selesai: string
+  }
+  pengajar: {
+    nama_depan: string
+    nama_belakang: string
+  }
+}
+
+export type Filter = {
+  id_kategori: number
 }
 
 const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
-  const { categoryId } = props
+  const {
+    categoryId,
+    userData: { id },
+  } = props
   const router = useRouter()
   const searchInput = useRef<any>(null)
   const [datas, setDatas] = useState<any>({
@@ -28,13 +42,23 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
     total: 0,
   })
   const [loading, setLoading] = useState<boolean>(false)
-  const [filter, setFilter] = useState<Model>({
+  const [showModal, setShowModal] = useState<boolean>(false)
+  const [filter, setFilter] = useState<Filter>({
+    id_kategori: categoryId,
+  })
+  const [model, setModel] = useState<Model>({
     id: "",
-    judul_diklat: "",
-    tgl_pelaksanaan_awal: "",
-    tgl_pelaksanaan_selesai: "",
-    tempat_diklat: "",
-    jenis_diklat: "",
+    judul: "",
+    id_kategori: "",
+    id_master_diklat: "",
+    jadwal: {
+      waktu_mulai: "",
+      waktu_selesai: "",
+    },
+    pengajar: {
+      nama_depan: "",
+      nama_belakang: "",
+    },
   })
   const [pagination, setPagination] = useState<any>({
     page: 1,
@@ -137,6 +161,14 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
       ),
     },
     {
+      title: "Pengajar",
+      dataIndex: "pengajar",
+      key: "pengajar",
+      render: (_, record) => (
+        <span>{`${record?.pengajar?.nama_depan} ${record?.pengajar?.nama_belakang}`}</span>
+      ),
+    },
+    {
       title: "Action",
       key: "action",
       width: 30,
@@ -146,12 +178,8 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
             type="primary"
             ghost
             onClick={() => {
-              console.log("record", record)
-              router.push("/survey")
-              // setIsedit(true)
-              // setModel(record)
-              // setModalTitle(`Update ${record.judul_diklat}`)
-              // setShowModal(true)
+              setModel(record)
+              setShowModal(true)
             }}
           >
             Ikuti Survey
@@ -170,7 +198,7 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
           pageSize: pagination?.pageSize,
           sortdatafield: "id",
           sortorder: "desc",
-          id_kategori: categoryId,
+          id_peserta: id,
           ...filter,
         },
       })

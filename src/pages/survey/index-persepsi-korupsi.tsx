@@ -60,7 +60,10 @@ const ListSurvey: NextPage<Props> = (props: Props) => {
               </Col>
               <Col span={20} xs={24} sm={19}>
                 <Content className="mx-0 mt-4 sm:mt-0 sm:mx-4 min-h-[200px]">
-                  <DynamicDataTable categoryId={categoryId} />
+                  <DynamicDataTable
+                    categoryId={categoryId}
+                    userData={esdm_survey}
+                  />
                 </Content>
               </Col>
             </Row>

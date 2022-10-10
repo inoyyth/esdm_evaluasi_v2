@@ -13,6 +13,7 @@ const Survey = dynamic(() => import("@components/Modal/Survey"), {
 
 type Props = {
   categoryId: number
+  userData: any
 }
 
 export type Model = {
@@ -35,7 +36,10 @@ export type Filter = {
 }
 
 const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
-  const { categoryId } = props
+  const {
+    categoryId,
+    userData: { id },
+  } = props
   const router = useRouter()
   const searchInput = useRef<any>(null)
   const [datas, setDatas] = useState<any>({
@@ -162,6 +166,14 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
       ),
     },
     {
+      title: "Pengajar",
+      dataIndex: "pengajar",
+      key: "pengajar",
+      render: (_, record) => (
+        <span>{`${record?.pengajar?.nama_depan} ${record?.pengajar?.nama_belakang}`}</span>
+      ),
+    },
+    {
       title: "Action",
       key: "action",
       width: 30,
@@ -191,6 +203,7 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
           pageSize: pagination?.pageSize,
           sortdatafield: "id",
           sortorder: "desc",
+          id_peserta: id,
           ...filter,
         },
       })

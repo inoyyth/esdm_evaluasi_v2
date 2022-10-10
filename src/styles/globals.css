@@ -28,3 +28,7 @@ a {
     background: black;
   }
 }
+
+.noUi-origin {
+  width: 10% !important;
+}
