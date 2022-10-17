@@ -44,13 +44,13 @@ const Login: FunctionComponent = () => {
       <div>
         <Form
           name="basic"
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
+          labelCol={{ span: 4, sm: 4, xs: 24 }}
+          wrapperCol={{ span: 20, sm: 20, xs: 24 }}
           initialValues={{ remember: true }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           autoComplete="off"
-          className="w-[500px] border-2 border-solid pr-12 pt-12"
+          className="w-auto md:w-[500px] border-2 border-solid p-6 md:pr-12 md:pt-12"
         >
           <Form.Item
             label="NIP"

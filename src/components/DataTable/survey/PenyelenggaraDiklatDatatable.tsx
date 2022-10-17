@@ -7,6 +7,8 @@ import { SearchOutlined } from "@ant-design/icons"
 import { useRouter } from "next/router"
 import dynamic from "next/dynamic"
 import { Filter, Model } from "./TenagaPengajarDatatable"
+import moment from "moment"
+import "moment/locale/id"
 
 const Survey = dynamic(() => import("@components/Modal/Survey"), {
   ssr: false,
@@ -144,17 +146,21 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
       key: "jadwal",
       ...getColumnSearchProps("jadwal"),
       render: (_, record) => (
-        <span>{`${record?.jadwal?.waktu_mulai} - ${record?.jadwal?.waktu_selesai}`}</span>
+        <span>
+          {moment(record?.tanggal_mulai).format("dddd, D MMMM YYYY") +
+            " - " +
+            moment(record?.tanggal_selesai).format("dddd, D MMMM YYYY")}
+        </span>
       ),
     },
-    {
-      title: "Pengajar",
-      dataIndex: "pengajar",
-      key: "pengajar",
-      render: (_, record) => (
-        <span>{`${record?.pengajar?.nama_depan} ${record?.pengajar?.nama_belakang}`}</span>
-      ),
-    },
+    // {
+    //   title: "Pengajar",
+    //   dataIndex: "pengajar",
+    //   key: "pengajar",
+    //   render: (_, record) => (
+    //     <span>{`${record?.pengajar?.nama_depan} ${record?.pengajar?.nama_belakang}`}</span>
+    //   ),
+    // },
     {
       title: "Action",
       key: "action",
@@ -230,7 +236,7 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
         }}
       />
       <Modal
-        title={`Survey Tenaga Pengajar`}
+        title={`Survey Penyelenggaraan Diklat`}
         open={showModal}
         // onOk={handleOk}
         className="w-full sm:w-[700px]"

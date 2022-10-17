@@ -1,30 +1,30 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import axios, { AxiosError, AxiosResponse } from 'axios'
-import type { NextApiRequest, NextApiResponse } from 'next'
-import Cookies from 'cookies'
-
+import axios, { AxiosError, AxiosResponse } from "axios"
+import type { NextApiRequest, NextApiResponse } from "next"
+import Cookies from "cookies"
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method === 'POST') {
-    var date = new Date(); 
+  if (req.method === "POST") {
+    var date = new Date()
     const cookies = new Cookies(req, res)
-    const { body: { data } } = req
-    const result: any = await
-      axios.post(`${process.env.API_URL}/api/auth/logout`,
-      data,{
+    const {
+      body: { data },
+    } = req
+    const result: any = await axios
+      .post(`${process.env.API_URL}/api/auth/logout`, data, {
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${cookies.get('token')}`
-        }
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.get("token")}`,
+        },
       })
       .then((response: AxiosResponse<any>) => {
-        cookies.set('token',  "", {
+        cookies.set("token", "", {
           expires: new Date(date.setDate(date.getDate() - 7)),
           maxAge: 0,
-          httpOnly: false
+          httpOnly: false,
         })
         return response
       })
@@ -32,24 +32,24 @@ export default async function handler(
         console.log(error)
         return error
       })
-      console.log('result', result)
-      if (result.status === 200) {
-        res.status(result.status).json({
-          success: true,
-          data: result.data
-        })
-      } else if (result.response?.status === 401) {
-        res.status(result.response.status).json({
-          success: false,
-          code: result.response.status,
-          message: 'Unauthorized, username or password is incorrect'
-        })
-      } else {
-        res.status(500).json({
-          success: false,
-          coder: 500,
-          message: 'internal server error'
-        })
-      }
+    console.log("result", result)
+    if (result.status === 200) {
+      res.status(result.status).json({
+        success: true,
+        data: result.data,
+      })
+    } else if (result.response?.status === 401) {
+      res.status(result.response.status).json({
+        success: false,
+        code: result.response.status,
+        message: "Unauthorized, username or password is incorrect",
+      })
+    } else {
+      res.status(500).json({
+        success: false,
+        coder: 500,
+        message: "internal server error",
+      })
+    }
   }
 }

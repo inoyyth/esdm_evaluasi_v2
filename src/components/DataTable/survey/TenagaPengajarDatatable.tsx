@@ -6,6 +6,8 @@ import type { ColumnsType, ColumnType } from "antd/es/table"
 import { SearchOutlined } from "@ant-design/icons"
 import { useRouter } from "next/router"
 import dynamic from "next/dynamic"
+import moment from "moment"
+import "moment/locale/id"
 
 const Survey = dynamic(() => import("@components/Modal/Survey"), {
   ssr: false,
@@ -162,36 +164,32 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
       key: "jadwal",
       ...getColumnSearchProps("jadwal"),
       render: (_, record) => (
-        <span>{`${record?.jadwal?.waktu_mulai} - ${record?.jadwal?.waktu_selesai}`}</span>
+        <span>
+          {moment(record?.tanggal_mulai).format("dddd, D MMMM YYYY") +
+            " - " +
+            moment(record?.tanggal_selesai).format("dddd, D MMMM YYYY")}
+        </span>
       ),
     },
-    {
-      title: "Pengajar",
-      dataIndex: "pengajar",
-      key: "pengajar",
-      render: (_, record) => (
-        <span>{`${record?.pengajar?.nama_depan} ${record?.pengajar?.nama_belakang}`}</span>
-      ),
-    },
-    {
-      title: "Action",
-      key: "action",
-      width: 30,
-      render: (_, record) => (
-        <Space size="middle">
-          <Button
-            type="primary"
-            ghost
-            onClick={() => {
-              setModel(record)
-              setShowModal(true)
-            }}
-          >
-            Ikuti Survey
-          </Button>
-        </Space>
-      ),
-    },
+    // {
+    //   title: "Action",
+    //   key: "action",
+    //   width: 30,
+    //   render: (_, record) => (
+    //     <Space size="middle">
+    //       <Button
+    //         type="primary"
+    //         ghost
+    //         onClick={() => {
+    //           setModel(record)
+    //           setShowModal(true)
+    //         }}
+    //       >
+    //         Pilih Pengajar
+    //       </Button>
+    //     </Space>
+    //   ),
+    // },
   ]
 
   const fetchData: Function = async () => {
@@ -245,6 +243,46 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
           onShowSizeChange: (current, pageSize) => {
             console.log(current, pageSize)
           },
+        }}
+        expandable={{
+          expandedRowRender: (record) => {
+            const render = record.jadwal.map((v: any, i: number) => (
+              // @ts-ignore
+              // eslint-disable-next-line react/no-unknown-property
+              <div
+                key={i}
+                className="flex justify-between hover:bg-neutral-200"
+              >
+                <div className="flex-1 flex-col gap-2">
+                  <div className="font-bold">Nama Pengajar</div>
+                  <div>
+                    {v.nama_depan} {v.nama_belakang}
+                  </div>
+                </div>
+                <div className="flex-[2] flex-col">
+                  <div className="font-bold">Materi</div>
+                  <div>{v.materi}</div>
+                </div>
+                <div className="flex-1 flex-col text-center self-center">
+                  {/* <div className="font-bold">Aksi</div> */}
+                  <div>
+                    <Button
+                      type="primary"
+                      ghost
+                      onClick={() => {
+                        setModel(record)
+                        setShowModal(true)
+                      }}
+                    >
+                      Survey Pengajar
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ))
+            return <div style={{ paddingLeft: "48px" }}>{render}</div>
+          },
+          rowExpandable: (record) => record.jadwal.length > 0,
         }}
       />
 

@@ -1,10 +1,17 @@
 import { FunctionComponent, useEffect, useRef, useState } from "react"
-import { Button, Input, Space, Table } from "antd"
+import { Button, Input, Modal, Space, Table } from "antd"
 import axios from "axios"
 import type { FilterConfirmProps } from "antd/es/table/interface"
 import type { ColumnsType, ColumnType } from "antd/es/table"
 import { SearchOutlined } from "@ant-design/icons"
 import { useRouter } from "next/router"
+import dynamic from "next/dynamic"
+import moment from "moment"
+import "moment/locale/id"
+
+const Survey = dynamic(() => import("@components/Modal/Survey"), {
+  ssr: false,
+})
 
 type Props = {
   categoryId: number
@@ -157,17 +164,21 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
       key: "jadwal",
       ...getColumnSearchProps("jadwal"),
       render: (_, record) => (
-        <span>{`${record?.jadwal?.waktu_mulai} - ${record?.jadwal?.waktu_selesai}`}</span>
+        <span>
+          {moment(record?.tanggal_mulai).format("dddd, D MMMM YYYY") +
+            " - " +
+            moment(record?.tanggal_selesai).format("dddd, D MMMM YYYY")}
+        </span>
       ),
     },
-    {
-      title: "Pengajar",
-      dataIndex: "pengajar",
-      key: "pengajar",
-      render: (_, record) => (
-        <span>{`${record?.pengajar?.nama_depan} ${record?.pengajar?.nama_belakang}`}</span>
-      ),
-    },
+    // {
+    //   title: "Pengajar",
+    //   dataIndex: "pengajar",
+    //   key: "pengajar",
+    //   render: (_, record) => (
+    //     <span>{`${record?.pengajar?.nama_depan} ${record?.pengajar?.nama_belakang}`}</span>
+    //   ),
+    // },
     {
       title: "Action",
       key: "action",
@@ -217,30 +228,42 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
   }, [filter, pagination])
 
   return (
-    <Table
-      bordered
-      size="small"
-      scroll={{ x: 900 }}
-      rowKey="id"
-      loading={loading}
-      columns={columns}
-      dataSource={datas?.data}
-      pagination={{
-        position: ["bottomLeft"],
-        defaultCurrent: 1,
-        total: datas.total,
-        onChange: (page, pageSize) => {
-          setPagination({
-            page: page,
-            pageSize: pageSize,
-          })
-        },
-        showSizeChanger: true,
-        onShowSizeChange: (current, pageSize) => {
-          console.log(current, pageSize)
-        },
-      }}
-    />
+    <>
+      <Table
+        bordered
+        size="small"
+        scroll={{ x: 900 }}
+        rowKey="id"
+        loading={loading}
+        columns={columns}
+        dataSource={datas?.data}
+        pagination={{
+          position: ["bottomLeft"],
+          defaultCurrent: 1,
+          total: datas.total,
+          onChange: (page, pageSize) => {
+            setPagination({
+              page: page,
+              pageSize: pageSize,
+            })
+          },
+          showSizeChanger: true,
+          onShowSizeChange: (current, pageSize) => {
+            console.log(current, pageSize)
+          },
+        }}
+      />
+      <Modal
+        title={`Survey Kepuasan Masyarakat`}
+        open={showModal}
+        // onOk={handleOk}
+        className="w-full sm:w-[700px]"
+        onCancel={() => setShowModal(false)}
+        footer={null}
+      >
+        <Survey model={model} />
+      </Modal>
+    </>
   )
 }
 
