@@ -9,10 +9,11 @@ import * as widgets from "surveyjs-widgets"
 
 type Props = {
   data: any
+  model: any
 }
 
 const SurveyComponent: FunctionComponent<Props> = (props: Props) => {
-  const { data } = props
+  const { data, model } = props
 
   const surveyJson = {
     pages: data?.data,
@@ -36,6 +37,7 @@ const SurveyComponent: FunctionComponent<Props> = (props: Props) => {
   const survey = new Survey.Model(surveyJson)
 
   survey.onComplete.add((survey: any) => {
+    console.log("model", model)
     console.log(survey.data)
   })
 

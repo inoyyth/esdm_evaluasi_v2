@@ -46,7 +46,7 @@ const Survey: FunctionComponent<Props> = (props: Props) => {
           {model?.pengajar?.nama_depan} {model?.pengajar?.nama_belakang}
         </b>
       </div>
-      <SurveyComponent data={data} />
+      <SurveyComponent data={data} model={model} />
     </div>
   )
 }
