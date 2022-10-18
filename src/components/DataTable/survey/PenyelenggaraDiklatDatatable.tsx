@@ -9,6 +9,7 @@ import dynamic from "next/dynamic"
 import { Filter, Model } from "./TenagaPengajarDatatable"
 import moment from "moment"
 import "moment/locale/id"
+import { findIndex, join, uniq } from "lodash"
 
 const Survey = dynamic(() => import("@components/Modal/Survey"), {
   ssr: false,
@@ -20,11 +21,10 @@ type Props = {
 }
 
 const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
-  const {
-    categoryId,
-    userData: { id },
-  } = props
+  const { categoryId, userData } = props
   const router = useRouter()
+  const pengajar = useRef<any>(null)
+  const hasAnswered = useRef(null)
   const searchInput = useRef<any>(null)
   const [datas, setDatas] = useState<any>({
     data: [],
@@ -165,20 +165,30 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
       title: "Action",
       key: "action",
       width: 30,
-      render: (_, record) => (
-        <Space size="middle">
-          <Button
-            type="primary"
-            ghost
-            onClick={() => {
-              setModel(record)
-              setShowModal(true)
-            }}
-          >
-            Ikuti Survey
-          </Button>
-        </Space>
-      ),
+      render: (_, record) => {
+        const isDisabled = findIndex(hasAnswered.current, function (o: any) {
+          return o.id_evaluasi === record?.id
+        })
+        return (
+          <Space size="middle">
+            <Button
+              disabled={isDisabled >= 0 ? true : false}
+              type="primary"
+              ghost
+              onClick={() => {
+                setModel(record)
+                setShowModal(true)
+                const x = record?.jadwal.map((v: any) => {
+                  return v?.nama_depan + " " + v?.nama_belakang
+                })
+                pengajar.current = join(uniq(x), ", ")
+              }}
+            >
+              Ikuti Survey
+            </Button>
+          </Space>
+        )
+      },
     },
   ]
 
@@ -191,7 +201,7 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
           pageSize: pagination?.pageSize,
           sortdatafield: "id",
           sortorder: "desc",
-          id_peserta: id,
+          id_peserta: userData?.id,
           ...filter,
         },
       })
@@ -204,9 +214,28 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
       })
   }
 
+  const fetchHasSurveyData: Function = async () => {
+    setLoading(true)
+    axios
+      .get("/api/answer", {
+        params: {
+          pageNumber: 1,
+          pageSize: 500,
+          sortdatafield: "id",
+          sortorder: "desc",
+          id_kategori: categoryId,
+          id_peserta: userData?.id,
+        },
+      })
+      .then((res: any) => {
+        hasAnswered.current = res?.data?.data
+        setLoading(false)
+      })
+  }
+
   useEffect(() => {
     fetchData()
-    console.log("main jabatan")
+    fetchHasSurveyData()
   }, [filter, pagination])
 
   return (
@@ -240,10 +269,14 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
         open={showModal}
         // onOk={handleOk}
         className="w-full sm:w-[700px]"
-        onCancel={() => setShowModal(false)}
+        onCancel={() => {
+          fetchData()
+          fetchHasSurveyData()
+          setShowModal(false)
+        }}
         footer={null}
       >
-        <Survey model={model} />
+        <Survey model={model} userData={userData} pengajar={pengajar.current} />
       </Modal>
     </>
   )

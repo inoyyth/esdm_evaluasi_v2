@@ -9,10 +9,14 @@ const SurveyComponent = dynamic(() => import("@components/SurveyComponent"), {
 
 type Props = {
   model: Model
+  idJadwalDiklat?: any
+  userData: any
+  isPengajar?: boolean
+  pengajar?: string
 }
 
 const Survey: FunctionComponent<Props> = (props: Props) => {
-  const { model } = props
+  const { model, idJadwalDiklat, userData, isPengajar, pengajar } = props
   const [data, setData] = useState<any>(null)
 
   const fetchData: Function = async () => {
@@ -41,12 +45,14 @@ const Survey: FunctionComponent<Props> = (props: Props) => {
         Mata Diklat: <b>{model?.judul}</b>
       </div>
       <div>
-        Tenaga Pengajar:{" "}
-        <b>
-          {model?.pengajar?.nama_depan} {model?.pengajar?.nama_belakang}
-        </b>
+        Tenaga Pengajar: <b>{pengajar}</b>
       </div>
-      <SurveyComponent data={data} model={model} />
+      <SurveyComponent
+        data={data}
+        model={model}
+        idJadwalDiklat={idJadwalDiklat}
+        userData={userData}
+      />
     </div>
   )
 }

@@ -6,14 +6,17 @@ import noUiSlider from "nouislider"
 import "nouislider/dist/nouislider.min.css"
 // @ts-ignore
 import * as widgets from "surveyjs-widgets"
+import axios from "axios"
 
 type Props = {
   data: any
   model: any
+  idJadwalDiklat?: any
+  userData: any
 }
 
 const SurveyComponent: FunctionComponent<Props> = (props: Props) => {
-  const { data, model } = props
+  const { data, model, idJadwalDiklat, userData } = props
 
   const surveyJson = {
     pages: data?.data,
@@ -39,6 +42,21 @@ const SurveyComponent: FunctionComponent<Props> = (props: Props) => {
   survey.onComplete.add((survey: any) => {
     console.log("model", model)
     console.log(survey.data)
+    console.log("idJadwalDiklat", idJadwalDiklat)
+    axios
+      .post("/api/answer", {
+        data: {
+          id_kategori: model?.id_kategori,
+          id_evaluasi: model?.id,
+          id_user: userData?.id,
+          id_diklat: model?.id_diklat,
+          id_jadwal_diklat: idJadwalDiklat?.id,
+          detail_answer: survey.data,
+        },
+      })
+      .then((res: any) => {
+        console.log("response", res)
+      })
   })
 
   return (

@@ -8,6 +8,7 @@ import { useRouter } from "next/router"
 import dynamic from "next/dynamic"
 import moment from "moment"
 import "moment/locale/id"
+import { findIndex } from "lodash"
 
 const Survey = dynamic(() => import("@components/Modal/Survey"), {
   ssr: false,
@@ -38,12 +39,12 @@ export type Filter = {
 }
 
 const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
-  const {
-    categoryId,
-    userData: { id },
-  } = props
+  const { categoryId, userData } = props
   const router = useRouter()
+  const hasAnswered = useRef(null)
   const searchInput = useRef<any>(null)
+  const id_jadwal_diklat = useRef<any>(null)
+  const pengajar = useRef<any>(null)
   const [datas, setDatas] = useState<any>({
     data: [],
     total: 0,
@@ -201,7 +202,7 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
           pageSize: pagination?.pageSize,
           sortdatafield: "id",
           sortorder: "desc",
-          id_peserta: id,
+          id_peserta: userData?.id,
           ...filter,
         },
       })
@@ -214,9 +215,28 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
       })
   }
 
+  const fetchHasSurveyData: Function = async () => {
+    setLoading(true)
+    axios
+      .get("/api/answer", {
+        params: {
+          pageNumber: 1,
+          pageSize: 500,
+          sortdatafield: "id",
+          sortorder: "desc",
+          id_kategori: categoryId,
+          id_peserta: userData?.id,
+        },
+      })
+      .then((res: any) => {
+        hasAnswered.current = res?.data?.data
+        setLoading(false)
+      })
+  }
+
   useEffect(() => {
     fetchData()
-    console.log("main jabatan")
+    fetchHasSurveyData()
   }, [filter, pagination])
 
   return (
@@ -246,40 +266,50 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
         }}
         expandable={{
           expandedRowRender: (record) => {
-            const render = record.jadwal.map((v: any, i: number) => (
+            const render = record.jadwal.map((v: any, i: number) => {
+              const isDisabled = findIndex(hasAnswered.current, {
+                id_evaluasi: record?.id,
+                id_jadwal_diklat: v?.id,
+              })
               // @ts-ignore
               // eslint-disable-next-line react/no-unknown-property
-              <div
-                key={i}
-                className="flex justify-between hover:bg-neutral-200"
-              >
-                <div className="flex-1 flex-col gap-2">
-                  <div className="font-bold">Nama Pengajar</div>
-                  <div>
-                    {v.nama_depan} {v.nama_belakang}
+              return (
+                <div
+                  key={i}
+                  className="flex justify-between hover:bg-neutral-200"
+                >
+                  <div className="flex-1 flex-col gap-2">
+                    <div className="font-bold">Nama Pengajar</div>
+                    <div>
+                      {v.nama_depan} {v.nama_belakang}
+                    </div>
+                  </div>
+                  <div className="flex-[2] flex-col">
+                    <div className="font-bold">Materi</div>
+                    <div>{v.materi}</div>
+                  </div>
+                  <div className="flex-1 flex-col text-center self-center">
+                    {/* <div className="font-bold">Aksi</div> */}
+                    <div>
+                      <Button
+                        disabled={isDisabled >= 0 ? true : false}
+                        type="primary"
+                        ghost
+                        onClick={() => {
+                          setModel(record)
+                          setShowModal(true)
+                          id_jadwal_diklat.current = v
+                          pengajar.current =
+                            v?.nama_depan + " " + v?.nama_belakang
+                        }}
+                      >
+                        Survey Pengajar
+                      </Button>
+                    </div>
                   </div>
                 </div>
-                <div className="flex-[2] flex-col">
-                  <div className="font-bold">Materi</div>
-                  <div>{v.materi}</div>
-                </div>
-                <div className="flex-1 flex-col text-center self-center">
-                  {/* <div className="font-bold">Aksi</div> */}
-                  <div>
-                    <Button
-                      type="primary"
-                      ghost
-                      onClick={() => {
-                        setModel(record)
-                        setShowModal(true)
-                      }}
-                    >
-                      Survey Pengajar
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            ))
+              )
+            })
             return <div style={{ paddingLeft: "48px" }}>{render}</div>
           },
           rowExpandable: (record) => record.jadwal.length > 0,
@@ -291,10 +321,20 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
         open={showModal}
         // onOk={handleOk}
         className="w-full sm:w-[700px]"
-        onCancel={() => setShowModal(false)}
+        onCancel={() => {
+          fetchData()
+          fetchHasSurveyData()
+          setShowModal(false)
+        }}
         footer={null}
       >
-        <Survey model={model} />
+        <Survey
+          model={model}
+          idJadwalDiklat={id_jadwal_diklat.current}
+          userData={userData}
+          pengajar={pengajar.current}
+          isPengajar
+        />
       </Modal>
     </>
   )
