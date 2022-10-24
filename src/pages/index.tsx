@@ -61,7 +61,7 @@ const Home: NextPage<Props> = (props: Props) => {
               <Col span={20} xs={24} sm={19}>
                 <Content className="mx-0 mt-4 sm:mt-0 sm:mx-4 min-h-[200px]">
                   <div className="text-center">
-                    Selamat Datang di Survey PPSDM KEBTKE
+                    Selamat Datang di Survey PPSDM
                   </div>
                 </Content>
               </Col>
