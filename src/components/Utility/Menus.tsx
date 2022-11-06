@@ -36,7 +36,7 @@ const Menus: FunctionComponent<Props> = (props: Props) => {
         icon: <LaptopOutlined />,
         label: "Dashboard",
         onClick: (item) => {
-          router.push("/")
+          window.location.replace("/")
         },
       },
       {
@@ -48,28 +48,28 @@ const Menus: FunctionComponent<Props> = (props: Props) => {
             key: "tenagaPengajar",
             label: "Tenaga Pengajar",
             onClick: (item) => {
-              router.push("/survey/tenaga-pengajar")
+              window.location.replace("/survey/tenaga-pengajar")
             },
           },
           {
             key: "penyelenggaraDiklat",
             label: "Penyelengaraan Diklat",
             onClick: (item) => {
-              router.push("/survey/penyelenggara-diklat")
+              window.location.replace("/survey/penyelenggara-diklat")
             },
           },
           {
             key: "surveyKepuasanMasyarakat",
             label: "Survey Kepuasan Masyarakat",
             onClick: (item) => {
-              router.push("/survey/survey-kepuasan-masyarakat")
+              window.location.replace("/survey/survey-kepuasan-masyarakat")
             },
           },
           {
             key: "indexPersepsiKorupsi",
             label: "Index Persepsi Korupsi",
             onClick: (item) => {
-              router.push("/survey/index-persepsi-korupsi")
+              window.location.replace("/survey/index-persepsi-korupsi")
             },
           },
         ],
