@@ -5,7 +5,6 @@ import jwt from "jsonwebtoken"
 import { Provider } from "react-redux"
 import { store } from "app/store"
 import { Breadcrumb, Layout } from "antd"
-import Header from "@components/Utility/HeaderLayout"
 import Footer from "@components/Utility/FooterLayout"
 import Menus from "@components/Utility/Menus"
 import dynamic from "next/dynamic"
@@ -24,7 +23,6 @@ const Survey: NextPage<Props> = (props: Props) => {
   return (
     <Provider store={store}>
       <Layout>
-        <Header />
         <Content style={{ padding: "0 16px" }}>
           <Breadcrumb style={{ margin: "16px 0" }}>
             <Breadcrumb.Item>Home</Breadcrumb.Item>
@@ -45,7 +43,6 @@ const Survey: NextPage<Props> = (props: Props) => {
               <div className="text-center text-xl">
                 <h1>Evaluasi 1</h1>
               </div>
-              <SurveyComponent />
             </Content>
           </Layout>
         </Content>
