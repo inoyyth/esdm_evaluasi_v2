@@ -41,7 +41,7 @@ export type Filter = {
 const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
   const { categoryId, userData } = props
   const router = useRouter()
-  const hasAnswered = useRef(null)
+  const [hasAnswered, setHasAnswered] = useState<any>(null)
   const pengajar = useRef<any>(null)
   const searchInput = useRef<any>(null)
   const [datas, setDatas] = useState<any>({
@@ -184,7 +184,7 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
       key: "action",
       width: 30,
       render: (_, record) => {
-        const isDisabled = findIndex(hasAnswered.current, function (o: any) {
+        const isDisabled = findIndex(hasAnswered, function (o: any) {
           return o.id_evaluasi === record?.id
         })
         return (
@@ -246,7 +246,7 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
         },
       })
       .then((res: any) => {
-        hasAnswered.current = res?.data?.data
+        setHasAnswered(res?.data?.data)
         setLoading(false)
       })
   }

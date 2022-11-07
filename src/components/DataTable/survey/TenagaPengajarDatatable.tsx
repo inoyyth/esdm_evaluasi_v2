@@ -41,7 +41,7 @@ export type Filter = {
 const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
   const { categoryId, userData } = props
   const router = useRouter()
-  const hasAnswered = useRef(null)
+  const [hasAnswered, setHasAnswered] = useState<any>(null)
   const searchInput = useRef<any>(null)
   const id_jadwal_diklat = useRef<any>(null)
   const pengajar = useRef<any>(null)
@@ -229,7 +229,7 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
         },
       })
       .then((res: any) => {
-        hasAnswered.current = res?.data?.data
+        setHasAnswered(res?.data?.data)
         setLoading(false)
       })
   }
@@ -267,7 +267,7 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
         expandable={{
           expandedRowRender: (record) => {
             const render = record.jadwal.map((v: any, i: number) => {
-              const isDisabled = findIndex(hasAnswered.current, {
+              const isDisabled = findIndex(hasAnswered, {
                 id_evaluasi: record?.id,
                 id_jadwal_diklat: v?.id,
               })
