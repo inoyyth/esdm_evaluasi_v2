@@ -84,7 +84,7 @@ const Menus: FunctionComponent<Props> = (props: Props) => {
       mode="inline"
       theme="dark"
       defaultSelectedKeys={[defaultSelectedKeys]}
-      defaultOpenKeys={[defaultOpenKeys]}
+      defaultOpenKeys={["survey"]}
       style={{ height: "100%" }}
       items={menuItems()}
     />

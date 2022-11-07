@@ -60,8 +60,13 @@ const Home: NextPage<Props> = (props: Props) => {
               </Col>
               <Col span={20} xs={24} sm={19}>
                 <Content className="mx-0 mt-4 sm:mt-0 sm:mx-4 min-h-[200px]">
-                  <div className="text-center">
-                    Selamat Datang di Survey PPSDM
+                  <div className="flex justify-center items-center flex-col font-bold">
+                    <div className="text-xl">
+                      Selamat Datang di Sistem Informasi Evaluasi PPSDM
+                    </div>
+                    <div className="mt-2">
+                      <img src="https://res.cloudinary.com/abbifam-com/image/upload/v1667780239/ESDM/dashboard_y86q3m.png" />
+                    </div>
                   </div>
                 </Content>
               </Col>
