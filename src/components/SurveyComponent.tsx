@@ -30,6 +30,7 @@ const SurveyComponent: FunctionComponent<Props> = (props: Props) => {
     completedHtml: "<h3>Terima kasih, Anda telah menyelesaikan Survey</h3>",
     firstPageIsStarted: false,
     showProgressBar: "bottom",
+    showQuestionNumbers: "off",
   }
   // Apply Theme
   Survey.StylesManager.applyTheme("defaultV2")
