@@ -40,10 +40,7 @@ const SurveyComponent: FunctionComponent<Props> = (props: Props) => {
   // Create a Model
   const survey = new Survey.Model(surveyJson)
 
-  survey.onComplete.add((survey: any) => {
-    console.log("model", model)
-    console.log(survey.data)
-    console.log("idJadwalDiklat", idJadwalDiklat)
+  survey.onComplete.add((question: any) => {
     axios
       .post("/api/answer", {
         data: {
@@ -52,7 +49,7 @@ const SurveyComponent: FunctionComponent<Props> = (props: Props) => {
           id_user: userData?.id,
           id_diklat: model?.id_diklat,
           id_jadwal_diklat: idJadwalDiklat?.id,
-          detail_answer: survey.data,
+          detail_answer: question.data,
         },
       })
       .then((res: any) => {
