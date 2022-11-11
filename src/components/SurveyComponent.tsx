@@ -7,6 +7,7 @@ import "nouislider/dist/nouislider.min.css"
 // @ts-ignore
 import * as widgets from "surveyjs-widgets"
 import axios from "axios"
+import { Wrapper } from "./SurveyComponent.style"
 
 type Props = {
   data: any
@@ -33,7 +34,7 @@ const SurveyComponent: FunctionComponent<Props> = (props: Props) => {
     showQuestionNumbers: "off",
   }
   // Apply Theme
-  Survey.StylesManager.applyTheme("defaultV2")
+  Survey.StylesManager.applyTheme("modern")
   // Survey.Survey.cssType = "bootstrap"
   widgets.nouislider(Survey)
 
@@ -57,10 +58,30 @@ const SurveyComponent: FunctionComponent<Props> = (props: Props) => {
       })
   })
 
+  survey.onValueChanged.add((result: any, options: any) => {
+    const value = options?.value
+    console.log("value", value)
+    const x = document.querySelector(".noUi-tooltip")
+    let text = "Baik"
+    if (value >= 90.01) {
+      text = "Sangat Baik"
+    } else if (value >= 80.01) {
+      text = "Baik"
+    } else if (value >= 70.01) {
+      text = "Cukup Baik"
+    } else if (value >= 60.01) {
+      text = "Kurang Baik"
+    } else {
+      text = "Buruk"
+    }
+    if (x)
+      x.innerHTML += "<p style='margin: 0px;font-size: 12px;'>" + text + "</p>"
+  })
+
   return (
-    <div>
+    <Wrapper>
       <Survey.Survey model={survey} />
-    </div>
+    </Wrapper>
   )
 }
 

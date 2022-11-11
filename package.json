@@ -15,6 +15,7 @@
     "@types/js-cookie": "^3.0.2",
     "@types/jsonwebtoken": "^8.5.9",
     "@types/lodash": "^4.14.185",
+    "@types/styled-components": "^5.1.26",
     "antd": "^4.23.2",
     "axios": "^0.27.2",
     "bootstrap": "^5.2.2",
@@ -34,6 +35,7 @@
     "react-dom": "18.2.0",
     "react-redux": "^8.0.4",
     "redux": "^4.2.0",
+    "styled-components": "^5.3.6",
     "survey-react": "^1.9.50",
     "survey-react-ui": "^1.9.50",
     "surveyjs-widgets": "^1.9.52"
