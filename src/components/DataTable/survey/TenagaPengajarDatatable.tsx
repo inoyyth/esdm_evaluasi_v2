@@ -225,7 +225,7 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
           sortdatafield: "id",
           sortorder: "desc",
           id_kategori: categoryId,
-          id_peserta: userData?.id,
+          id_user: userData?.id,
         },
       })
       .then((res: any) => {
