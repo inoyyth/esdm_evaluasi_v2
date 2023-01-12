@@ -44,18 +44,21 @@ const Login: FunctionComponent = () => {
       <div>
         <Form
           name="basic"
-          labelCol={{ span: 4, sm: 4, xs: 24 }}
-          wrapperCol={{ span: 20, sm: 20, xs: 24 }}
+          labelCol={{ sm: 24, xs: 24 }}
+          wrapperCol={{ span: 24, sm: 24, xs: 24 }}
           initialValues={{ remember: true }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           autoComplete="off"
           className="w-auto md:w-[500px] border-2 border-solid p-6 md:pr-12 md:pt-12"
+          layout="vertical"
         >
           <Form.Item
-            label="NIP"
+            label="Masukkan Email/NIK/NIP"
             name="nik"
-            rules={[{ required: true, message: "Mohon masukkan NIK!" }]}
+            rules={[
+              { required: true, message: "Mohon masukkan Email/NIK/NIP!" },
+            ]}
           >
             <Input />
           </Form.Item>
@@ -63,14 +66,14 @@ const Login: FunctionComponent = () => {
           <Form.Item
             name="remember"
             valuePropName="checked"
-            wrapperCol={{ offset: 8, span: 16 }}
+            wrapperCol={{ sm: 24 }}
           >
             <Checkbox>Remember me</Checkbox>
           </Form.Item>
 
-          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-            <Button type="primary" htmlType="submit">
-              Submit
+          <Form.Item wrapperCol={{ sm: 24 }}>
+            <Button type="primary" htmlType="submit" block>
+              Login
             </Button>
           </Form.Item>
         </Form>
