@@ -60,7 +60,6 @@ const SurveyComponent: FunctionComponent<Props> = (props: Props) => {
 
   survey.onValueChanged.add((result: any, options: any) => {
     const value = options?.value
-    console.log("value", value)
     const x = document.querySelector(".noUi-tooltip")
     let text = "Baik"
     if (value >= 90.01) {
