@@ -14,10 +14,11 @@ type Props = {
   model: any
   idJadwalDiklat?: any
   userData: any
+  idPengajar?: any
 }
 
 const SurveyComponent: FunctionComponent<Props> = (props: Props) => {
-  const { data, model, idJadwalDiklat, userData } = props
+  const { data, model, idJadwalDiklat, userData, idPengajar } = props
 
   const surveyJson = {
     pages: data?.data,
@@ -51,6 +52,7 @@ const SurveyComponent: FunctionComponent<Props> = (props: Props) => {
           id_diklat: model?.id_diklat,
           id_jadwal_diklat: idJadwalDiklat?.id,
           detail_answer: question.data,
+          id_pengajar: idPengajar,
         },
       })
       .then((res: any) => {

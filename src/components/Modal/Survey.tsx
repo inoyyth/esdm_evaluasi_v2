@@ -13,10 +13,12 @@ type Props = {
   userData: any
   isPengajar?: boolean
   pengajar?: string
+  idPengajar?: any
 }
 
 const Survey: FunctionComponent<Props> = (props: Props) => {
-  const { model, idJadwalDiklat, userData, isPengajar, pengajar } = props
+  const { model, idJadwalDiklat, userData, isPengajar, pengajar, idPengajar } =
+    props
   const [data, setData] = useState<any>(null)
 
   const fetchData: Function = async () => {
@@ -52,6 +54,7 @@ const Survey: FunctionComponent<Props> = (props: Props) => {
         model={model}
         idJadwalDiklat={idJadwalDiklat}
         userData={userData}
+        idPengajar={idPengajar}
       />
     </div>
   )

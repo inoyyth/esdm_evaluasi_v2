@@ -29,6 +29,7 @@ export type Model = {
     waktu_selesai: string
   }
   pengajar: {
+    id?: string | number
     nama_depan: string
     nama_belakang: string
   }
@@ -45,6 +46,7 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
   const searchInput = useRef<any>(null)
   const id_jadwal_diklat = useRef<any>(null)
   const pengajar = useRef<any>(null)
+  const idPengajar = useRef<any>(null)
   const [datas, setDatas] = useState<any>({
     data: [],
     total: 0,
@@ -64,6 +66,7 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
       waktu_selesai: "",
     },
     pengajar: {
+      id: "",
       nama_depan: "",
       nama_belakang: "",
     },
@@ -211,6 +214,8 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
           data: res?.data?.data,
           total: res?.data?.meta?.pagination?.total,
         })
+
+        console.log("Recored", res?.data?.data)
         setLoading(false)
       })
   }
@@ -278,7 +283,7 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
                   key={i}
                   className="flex justify-between hover:bg-neutral-200"
                 >
-                  <div className="flex-1 flex-col gap-2">
+                  <div className="flex-col flex-1 gap-2">
                     <div className="font-bold">Nama Pengajar</div>
                     <div>
                       {v.nama_depan} {v.nama_belakang}
@@ -288,7 +293,7 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
                     <div className="font-bold">Materi</div>
                     <div>{v.materi}</div>
                   </div>
-                  <div className="flex-1 flex-col text-center self-center">
+                  <div className="flex-col self-center flex-1 text-center">
                     {/* <div className="font-bold">Aksi</div> */}
                     <div>
                       <Button
@@ -299,6 +304,7 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
                           setModel(record)
                           setShowModal(true)
                           id_jadwal_diklat.current = v
+                          idPengajar.current = v.pengajar
                           pengajar.current =
                             v?.nama_depan + " " + v?.nama_belakang
                         }}
@@ -333,6 +339,7 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
           idJadwalDiklat={id_jadwal_diklat.current}
           userData={userData}
           pengajar={pengajar.current}
+          idPengajar={idPengajar.current}
           isPengajar
         />
       </Modal>
