@@ -1,8 +1,9 @@
-import { Col, Layout, Row, Dropdown, Menu, Space } from "antd"
-import { FunctionComponent } from "react"
-import { DownOutlined } from "@ant-design/icons"
+import { Col, Layout, Row, Dropdown, Menu, Space, Drawer } from "antd"
+import { FunctionComponent, useState } from "react"
+import { CaretRightOutlined, MenuOutlined } from "@ant-design/icons"
 import { useRouter } from "next/router"
 import Cookies from "js-cookie"
+import { Wrapper } from "./HeaderLayout.style"
 
 type Props = {
   userData: any
@@ -15,6 +16,7 @@ const HeaderLayout: FunctionComponent<Props> = (props: Props) => {
     userData: { nama_depan },
   } = props
   const router = useRouter()
+  const [drawerOpen, setDrawerOpen] = useState<boolean>(false)
 
   const logout: Function = async () => {
     await Cookies.remove("esdm_survey")
@@ -36,28 +38,57 @@ const HeaderLayout: FunctionComponent<Props> = (props: Props) => {
   )
 
   return (
-    <Header className="header h-full">
-      <Row>
-        <Col span={20} sm={20} xs={24}>
-          <div className="logo flex justify-center md:justify-start">
-            <img
-              src="https://1.bp.blogspot.com/-bNLzEtz7lcA/XF-I1k-MMXI/AAAAAAAAJfM/u8ClnQ8vG_AEU__UQx0usEbx52Z1_LA3ACLcBGAs/s640/Logo%2BKementerian%2BEnergi%2Bdan%2BSumber%2BDaya%2BMineral%2B%2528ESDM%2529%2B-%2BDownload%2BFile%2BVector%2BPNG.jpg"
-              width={100}
-            />
+    <Wrapper>
+      <Header className="h-full p-0 header bg-lightYellow">
+        <Row>
+          <Col span={24} sm={24} xs={24}>
+            <div className="flex justify-between px-4 font-bold logo md:justify-start">
+              <div>Sistem Informasi Evaluasi</div>
+              <div>
+                <MenuOutlined
+                  rev={null}
+                  style={{ color: "#000" }}
+                  onClick={() => {
+                    setDrawerOpen(true)
+                  }}
+                />
+              </div>
+            </div>
+          </Col>
+        </Row>
+      </Header>
+      <Drawer
+        title="Menu"
+        placement="right"
+        closable={true}
+        onClose={() => {
+          setDrawerOpen(false)
+        }}
+        open={drawerOpen}
+        key="right"
+      >
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center gap-2">
+            <CaretRightOutlined rev={null} />
+            <span className="font-bold">
+              <a href="/">Dashboard</a>
+            </span>
           </div>
-        </Col>
-        <Col span={4} sm={4} xs={24}>
-          <div className="text-white flex justify-center md:justify-start">
-            <Dropdown overlay={menu}>
-              <a onClick={(e) => e.preventDefault()} className="text-white">
-                Selamat Datang, {nama_depan} &nbsp;
-                <DownOutlined />
-              </a>
-            </Dropdown>
+          <div className="flex items-center gap-2">
+            <CaretRightOutlined rev={null} />
+            <span className="font-bold">Profile</span>
           </div>
-        </Col>
-      </Row>
-    </Header>
+          <div className="flex items-center gap-2">
+            <CaretRightOutlined rev={null} />
+            <span className="font-bold">Evaluasi</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <CaretRightOutlined rev={null} />
+            <span className="font-bold">Logout</span>
+          </div>
+        </div>
+      </Drawer>
+    </Wrapper>
   )
 }
 

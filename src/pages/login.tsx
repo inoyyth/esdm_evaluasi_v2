@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken"
 import { GetServerSideProps } from "next"
 import { isNil } from "lodash"
 import { useRouter } from "next/router"
+import { Wrapper } from "@components/Login/index.style"
 
 const { Content } = Layout
 
@@ -37,56 +38,65 @@ const Login: FunctionComponent = () => {
   }
 
   return (
-    <div className="flex justify-center items-center flex-col h-[500px]">
-      <div className="pb-5">
-        <img src="/images/logo-esdm.png" width={100} />
-      </div>
-      <div>
-        <Form
-          name="basic"
-          labelCol={{ sm: 24, xs: 24 }}
-          wrapperCol={{ span: 24, sm: 24, xs: 24 }}
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
-          className="w-auto md:w-[500px] border-2 border-solid p-6 md:pr-12 md:pt-12"
-          layout="vertical"
-        >
-          <Form.Item
-            label="Masukkan Email/NIK/NIP"
-            name="nik"
-            rules={[
-              { required: true, message: "Mohon masukkan Email/NIK/NIP!" },
-            ]}
-          >
-            <Input />
-          </Form.Item>
+    <div className="bg-lightYellow">
+      <div className="flex flex-col md:flex-row items-center justify-between h-[100vh] gap-8 md:gap-0">
+        <div className="w-full mt-8 md:mt-auto md:w-1/2">
+          <div className="text-[30px] md:text-[50px] font-bold text-center">
+            SISTEM INFORMASI EVALUASI TERINTEGRASI
+          </div>
+        </div>
+        <div className="relative w-full h-full md:relative md:w-1/2">
+          <div className="w-full md:w-[400px] absolute md:right-6 md:top-10 self-start">
+            <Form
+              name="basic"
+              labelCol={{ sm: 24, xs: 24 }}
+              wrapperCol={{ span: 24, sm: 24, xs: 24 }}
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
+              className="w-auto p-6 border-2 border-white border-solid rounded-tl-xl rounded-br-xl md:pr-12 md:pt-12"
+              layout="vertical"
+            >
+              <Form.Item
+                label="Masukkan Email/NIK/NIP"
+                name="nik"
+                rules={[
+                  { required: true, message: "Mohon masukkan Email/NIK/NIP!" },
+                ]}
+              >
+                <Input />
+              </Form.Item>
 
-          <Form.Item
-            name="remember"
-            valuePropName="checked"
-            wrapperCol={{ sm: 24 }}
-          >
-            <Checkbox>Remember me</Checkbox>
-          </Form.Item>
+              <Form.Item
+                name="remember"
+                valuePropName="checked"
+                wrapperCol={{ sm: 24 }}
+              >
+                <Checkbox>Remember me</Checkbox>
+              </Form.Item>
 
-          <Form.Item wrapperCol={{ sm: 24 }}>
-            <Button type="primary" htmlType="submit" block>
-              Login
-            </Button>
-          </Form.Item>
-        </Form>
-      </div>
-      <div className="mt-2">
-        {showAlert && (
-          <Alert
-            message={errorMessage}
-            type="error"
-            closable
-            onClose={() => setShowAlert(false)}
-          />
-        )}
+              <Form.Item wrapperCol={{ sm: 24 }}>
+                <Button type="primary" htmlType="submit" block>
+                  Login
+                </Button>
+              </Form.Item>
+            </Form>
+          </div>
+          <div className="">
+            {showAlert && (
+              <Alert
+                message={errorMessage}
+                type="error"
+                closable
+                onClose={() => setShowAlert(false)}
+              />
+            )}
+          </div>
+          <div className="absolute w-full text-center bottom-1">
+            version 2.0
+          </div>
+        </div>
       </div>
     </div>
   )

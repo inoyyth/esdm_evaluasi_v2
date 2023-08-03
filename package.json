@@ -10,6 +10,7 @@
     "lint:fix": "eslint --ext .ts,.tsx ./ --fix --quiet ."
   },
   "dependencies": {
+    "@ant-design/icons": "^5.2.4",
     "@reduxjs/toolkit": "^1.8.5",
     "@types/cookies": "^0.7.7",
     "@types/js-cookie": "^3.0.2",
@@ -19,7 +20,7 @@
     "antd": "^4.23.2",
     "axios": "^0.27.2",
     "bootstrap": "^5.2.2",
-    "chart.js": "^3.9.1",
+    "chart.js": "^4.3.3",
     "cookies": "^0.8.0",
     "dotenv": "^16.0.2",
     "jquery-bar-rating": "^1.2.2",
@@ -30,7 +31,7 @@
     "next-cookies": "^2.0.3",
     "nouislider": "^15.6.1",
     "react": "18.2.0",
-    "react-chartjs-2": "^4.3.1",
+    "react-chartjs-2": "^5.2.0",
     "react-cookie": "^4.1.1",
     "react-dom": "18.2.0",
     "react-redux": "^8.0.4",
