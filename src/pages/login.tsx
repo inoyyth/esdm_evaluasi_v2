@@ -16,7 +16,6 @@ const Login: FunctionComponent = () => {
   const router = useRouter()
 
   const onFinish = async (values: any) => {
-    console.log("Success:", values)
     await axios
       .post("/api/auth/login/", {
         data: values,
@@ -110,7 +109,6 @@ export const getServerSideProps: GetServerSideProps<any> = async (
   const jwtData: any = jwt.decode(authCookies)
   console.log(jwtData)
   if (!isNil(authCookies)) {
-    console.log(jwtData)
     return {
       props: {},
       redirect: {

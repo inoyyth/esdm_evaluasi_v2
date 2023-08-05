@@ -1,6 +1,22 @@
-import { Col, Layout, Row, Dropdown, Menu, Space, Drawer } from "antd"
+import {
+  Col,
+  Layout,
+  Row,
+  Dropdown,
+  Menu,
+  Space,
+  Drawer,
+  Button,
+  Modal,
+} from "antd"
 import { FunctionComponent, useState } from "react"
-import { CaretRightOutlined, MenuOutlined } from "@ant-design/icons"
+import {
+  CaretRightOutlined,
+  ExclamationCircleOutlined,
+  HomeOutlined,
+  LogoutOutlined,
+  MenuOutlined,
+} from "@ant-design/icons"
 import { useRouter } from "next/router"
 import Cookies from "js-cookie"
 import { Wrapper } from "./HeaderLayout.style"
@@ -23,6 +39,19 @@ const HeaderLayout: FunctionComponent<Props> = (props: Props) => {
     router.reload()
   }
 
+  const confirm = () => {
+    Modal.confirm({
+      title: "Logout",
+      icon: <ExclamationCircleOutlined rev={null} />,
+      content: "Yakin keluar?",
+      okText: "Ya",
+      cancelText: "Tidak",
+      onOk: () => {
+        logout()
+      },
+    })
+  }
+
   const menu = (
     <Menu
       items={[
@@ -43,8 +72,10 @@ const HeaderLayout: FunctionComponent<Props> = (props: Props) => {
         <Row>
           <Col span={24} sm={24} xs={24}>
             <div className="flex justify-between px-4 font-bold logo md:justify-start">
-              <div>Sistem Informasi Evaluasi</div>
               <div>
+                Hi, <span className="underline">{nama_depan}</span>
+              </div>
+              {/* <div>
                 <MenuOutlined
                   rev={null}
                   style={{ color: "#000" }}
@@ -52,7 +83,35 @@ const HeaderLayout: FunctionComponent<Props> = (props: Props) => {
                     setDrawerOpen(true)
                   }}
                 />
-              </div>
+              </div> */}
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={24} className="px-4 py-2 bg-gray-200">
+            <div className="flex justify-between">
+              <Button
+                type="primary"
+                ghost
+                icon={<HomeOutlined rev={null} />}
+                size="small"
+                className="flex items-center"
+                onClick={() => {
+                  window.location.replace("/")
+                }}
+              >
+                Dashboard
+              </Button>
+              <Button
+                type="link"
+                icon={<LogoutOutlined rev={null} />}
+                size="small"
+                danger
+                className="flex items-center"
+                onClick={() => confirm()}
+              >
+                Logout
+              </Button>
             </div>
           </Col>
         </Row>
@@ -76,15 +135,19 @@ const HeaderLayout: FunctionComponent<Props> = (props: Props) => {
           </div>
           <div className="flex items-center gap-2">
             <CaretRightOutlined rev={null} />
+            <span className="font-bold">
+              <a href="/evaluasi">Evaluasi</a>
+            </span>
+          </div>
+          {/* <div className="flex items-center gap-2">
+            <CaretRightOutlined rev={null} />
             <span className="font-bold">Profile</span>
-          </div>
+          </div> */}
           <div className="flex items-center gap-2">
             <CaretRightOutlined rev={null} />
-            <span className="font-bold">Evaluasi</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <CaretRightOutlined rev={null} />
-            <span className="font-bold">Logout</span>
+            <span className="font-bold" onClick={() => logout()}>
+              Logout
+            </span>
           </div>
         </div>
       </Drawer>

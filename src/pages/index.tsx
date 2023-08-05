@@ -4,14 +4,16 @@ import cookies from "next-cookies"
 import jwt from "jsonwebtoken"
 import { Provider } from "react-redux"
 import { store } from "app/store"
-import { Breadcrumb, Button, Card, Col, Layout, Row } from "antd"
+import { Breadcrumb, Button, Col, Layout, Row } from "antd"
 import Header from "@components/Utility/HeaderLayout"
 import Footer from "@components/Utility/FooterLayout"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import React from "react"
 import "antd/dist/antd.css"
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js"
 import { Doughnut } from "react-chartjs-2"
+import CardDiklat from "@components/Card/CardDiklat"
+import axios from "axios"
 
 type Props = {
   children: any
@@ -25,6 +27,11 @@ ChartJS.register(ArcElement, Tooltip, Legend)
 const Home: NextPage<Props> = (props: Props) => {
   const { user: esdm_survey } = props
   const [collapsed, setCollapsed] = useState<boolean>(false)
+  const [listSurvey, setListSurvey] = useState<any>({
+    data: [],
+    total: 0,
+  })
+  const [hasAnswered, setHasAnswered] = useState<any>(null)
   const toggleCollapsed = () => {
     setCollapsed(!collapsed)
   }
@@ -34,13 +41,54 @@ const Home: NextPage<Props> = (props: Props) => {
     datasets: [
       {
         label: "# Evaluasi",
-        data: [12, 19],
+        data: [12, 12],
         backgroundColor: ["rgba(75, 192, 192, 0.2)", "rgba(255, 99, 132, 0.2)"],
         borderColor: ["rgba(75, 192, 192, 1)", "rgba(255, 99, 132, 1)"],
         borderWidth: 1,
       },
     ],
   }
+
+  const fetchData: Function = async () => {
+    axios
+      .get("/api/survey", {
+        params: {
+          pageNumber: 1,
+          pageSize: 1000,
+          sortdatafield: "id",
+          sortorder: "desc",
+          id_peserta: esdm_survey?.id,
+          group_by: "id_diklat",
+        },
+      })
+      .then((res: any) => {
+        setListSurvey({
+          data: res?.data?.data,
+          total: res?.data?.meta?.pagination?.total,
+        })
+      })
+  }
+
+  const fetchHasSurveyData: Function = async () => {
+    axios
+      .get("/api/answer", {
+        params: {
+          pageNumber: 1,
+          pageSize: 500,
+          sortdatafield: "id",
+          sortorder: "desc",
+          id_user: esdm_survey?.id,
+        },
+      })
+      .then((res: any) => {
+        setHasAnswered(res?.data?.data)
+      })
+  }
+
+  useEffect(() => {
+    fetchData()
+    fetchHasSurveyData()
+  }, [])
 
   return (
     <Provider store={store}>
@@ -49,7 +97,7 @@ const Home: NextPage<Props> = (props: Props) => {
           <Header userData={esdm_survey} />
         </Col>
       </Row>
-      <Row>
+      {/* <Row>
         <Col span={24} className="px-4 py-2 bg-gray-200">
           <Breadcrumb>
             <Breadcrumb.Item>
@@ -57,7 +105,7 @@ const Home: NextPage<Props> = (props: Props) => {
             </Breadcrumb.Item>
           </Breadcrumb>
         </Col>
-      </Row>
+      </Row> */}
       <Row>
         <Col span={24} className="px-4 py-2">
           <Doughnut data={data} />
@@ -68,25 +116,10 @@ const Home: NextPage<Props> = (props: Props) => {
           <div className="mb-2 text-base font-bold">
             Evaluasi Diklat Tertunda
           </div>
-          <div>
-            <Card
-              size="small"
-              title="Pelatihan Teknis Penyegaran Bagi Asesor Kompetensi Muda yang Ingin Menambah Bidang Kompetensi (Distribusi Tenaga Listrik) (BPE)"
-            >
-              <p>Card content</p>
-              <p>Card content</p>
-              <p>Card content</p>
-            </Card>
-          </div>
-          <div>
-            <Card
-              size="small"
-              title="Pelatihan Teknis Penyegaran Bagi Asesor Kompetensi Muda yang Ingin Menambah Bidang Kompetensi (Distribusi Tenaga Listrik) (BPE)"
-            >
-              <p>Card content</p>
-              <p>Card content</p>
-              <p>Card content</p>
-            </Card>
+          <div className="flex flex-col gap-4">
+            {listSurvey.data.map((v: any, i: number) => {
+              return <CardDiklat {...v} />
+            })}
           </div>
         </Col>
       </Row>
@@ -105,7 +138,6 @@ export const getServerSideProps: GetServerSideProps<any> = async (
   const c: any = cookies(context)
   const authCookies: string = c["esdm_survey"]
   const jwtData: any = jwt.decode(authCookies)
-  console.log(authCookies)
   if (!isNil(authCookies)) {
     // console.log(jwtData)
     return {

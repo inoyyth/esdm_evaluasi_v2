@@ -29,7 +29,6 @@ export default async function handler(
       .catch((error: AxiosError<any>) => {
         return error
       })
-    console.log(result)
     if (result.status === 200) {
       res.status(result.status).json({
         success: true,
