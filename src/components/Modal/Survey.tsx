@@ -1,5 +1,6 @@
 import { Model } from "@components/DataTable/survey/TenagaPengajarDatatable"
 import axios from "axios"
+import { isEmpty } from "lodash"
 import dynamic from "next/dynamic"
 import { FunctionComponent, useEffect, useRef, useState } from "react"
 
@@ -30,6 +31,10 @@ const Survey: FunctionComponent<Props> = (props: Props) => {
           sortdatafield: "id",
           sortorder: "desc",
           id_evaluasi: model?.id,
+          id_kategori: model?.id_kategori,
+          id_user: model?.id_user,
+          id_diklat: model?.id_diklat,
+          id_jadwal_diklat: model?.id_jadwal_diklat,
         },
       })
       .then((res: any) => {
@@ -43,12 +48,16 @@ const Survey: FunctionComponent<Props> = (props: Props) => {
   }, [model])
   return (
     <div>
-      <div>
-        Mata Diklat: <b>{model?.judul}</b>
-      </div>
-      <div>
-        Tenaga Pengajar: <b>{pengajar}</b>
-      </div>
+      {isPengajar === true && (
+        <div>
+          Materi: <b>{model?.judul}</b>
+        </div>
+      )}
+      {!isEmpty(pengajar) && (
+        <div>
+          Tenaga Pengajar: <b>{pengajar}</b>
+        </div>
+      )}
       <SurveyComponent
         data={data}
         model={model}

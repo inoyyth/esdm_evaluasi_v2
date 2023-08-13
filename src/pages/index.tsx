@@ -106,15 +106,15 @@ const Home: NextPage<Props> = (props: Props) => {
           </Breadcrumb>
         </Col>
       </Row> */}
-      <Row>
+      {/* <Row>
         <Col span={24} className="px-4 py-2">
           <Doughnut data={data} />
         </Col>
-      </Row>
+      </Row> */}
       <Row>
         <Col span={24} className="px-4 py-4 mb-8">
           <div className="mb-2 text-base font-bold">
-            Evaluasi Diklat Tertunda
+            Daftar Pelatihan yang diikuti
           </div>
           <div className="flex flex-col gap-4">
             {listSurvey.data.map((v: any, i: number) => {

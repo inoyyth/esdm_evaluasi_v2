@@ -19,6 +19,7 @@ type Props = {
   tanggal_mulai: string
   tanggal_selesai: string
   jadwal: any[]
+  metode_pelaksanaan: string
 }
 
 const CardDiklat: FunctionComponent<Props> = (props: Props) => {
@@ -30,6 +31,7 @@ const CardDiklat: FunctionComponent<Props> = (props: Props) => {
     tanggal_mulai,
     nmsatker,
     tanggal_selesai,
+    metode_pelaksanaan,
     jadwal,
     id_diklat,
   } = props
@@ -37,15 +39,24 @@ const CardDiklat: FunctionComponent<Props> = (props: Props) => {
     <Wrapper>
       <Card
         size="small"
-        title={judul}
-        onClick={() => window.location.replace(`/evaluasi/${id_diklat}`)}
+        title={
+          <div
+            className="cursor-pointer"
+            onClick={() => window.location.replace(`/evaluasi/${id_diklat}`)}
+          >
+            {judul}
+          </div>
+        }
       >
         <div className="p-3">
           <div>
             <b>Lokasi:</b> {lokasi}
           </div>
           <div>
-            <b>Tipe:</b> {tipe_diklat}
+            <b>Metode:</b> {metode_pelaksanaan}
+          </div>
+          <div>
+            <b>Jenis Pelatihan:</b> {tipe_diklat}
           </div>
           <div>
             <b>Satuan Kerja:</b> {nmsatker}

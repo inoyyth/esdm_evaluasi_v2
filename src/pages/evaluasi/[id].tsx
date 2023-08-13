@@ -1,5 +1,5 @@
 import type { GetServerSideProps, NextPage } from "next"
-import { isEmpty, isNil, isUndefined } from "lodash"
+import { findIndex, isEmpty, isNil, isUndefined } from "lodash"
 import cookies from "next-cookies"
 import jwt from "jsonwebtoken"
 import { Provider } from "react-redux"
@@ -60,6 +60,8 @@ const Home: NextPage<Props> = (props: Props) => {
           sortdatafield: "id_kategori",
           sortorder: "asc",
           id_diklat: idDiklat,
+          is_published: true,
+          id_user: esdm_survey?.id,
         },
       })
       .then((res: any) => {
@@ -110,6 +112,12 @@ const Home: NextPage<Props> = (props: Props) => {
                     : ""}
                 </div>
                 <div>
+                  <b>Metode:</b>{" "}
+                  {!isUndefined(listSurvey.data[0])
+                    ? listSurvey.data[0].metode_pelaksanaan
+                    : ""}
+                </div>
+                <div>
                   <b>Tipe:</b>{" "}
                   {!isUndefined(listSurvey.data[0])
                     ? listSurvey.data[0].tipe_diklat
@@ -142,19 +150,45 @@ const Home: NextPage<Props> = (props: Props) => {
       </Row>
       <Row>
         <Col span={24} className="px-4">
-          <div className="font-bold underline">Survey Pengajar</div>
+          <div className="font-bold underline">Evaluasi Tenaga Pengajar</div>
           <div className="flex flex-col gap-3 pt-4">
             {!isEmpty(listSurvey.data) &&
               listSurvey.data.map((v: any) => {
                 if (v?.is_multiple === true) {
                   return v.jadwal.map((j: any, i: number) => {
+                    let status: any
+                    const isFinish = findIndex(hasAnswered, {
+                      id_evaluasi: v?.id,
+                      id_jadwal_diklat: j?.id,
+                    })
+                    if (isFinish >= 0) {
+                      status = "finished"
+                    } else if (j.total_terjawab > 0) {
+                      status = "pending"
+                    } else {
+                      status = "new"
+                    }
+
                     return (
                       <CardEvaluasi
+                        id={v.id}
+                        id_diklat={v.id_diklat}
+                        id_kategori={v.id_kategori}
+                        id_master_diklat={v.id_master_diklat}
+                        id_jadwal={j.id}
                         title={j?.materi}
+                        id_pengajar={j.pengajar}
                         pengajar={j.nama_depan}
-                        totalQuestion={9}
+                        total_pertanyaan={v.total_pertanyaan}
                         waktu_mulai={j.waktu_mulai}
                         waktu_selesai={j.waktu_selesai}
+                        userData={esdm_survey}
+                        fetchData={() => fetchData()}
+                        fetchHasSurveyData={() => fetchHasSurveyData()}
+                        isPengajar={true}
+                        nmkategori={v.nmkategori}
+                        status={status}
+                        totalTerjawab={j.total_terjawab}
                       />
                     )
                   })
@@ -169,10 +203,37 @@ const Home: NextPage<Props> = (props: Props) => {
           <div className="flex flex-col gap-3 pt-4">
             {!isEmpty(listSurvey.data) &&
               listSurvey.data.map((v: any, i: number) => {
-                if (v?.is_multiple === false)
+                if (v?.is_multiple === false) {
+                  let status: any
+                  const isFinish = findIndex(hasAnswered, {
+                    id_evaluasi: v?.id,
+                  })
+                  if (isFinish >= 0) {
+                    status = "finished"
+                  } else if (v.total_terjawab > 0) {
+                    status = "pending"
+                  } else {
+                    status = "new"
+                  }
+                  console.log("isfinish", isFinish)
+                  console.log("total_terjawab", v.total_terjawab)
                   return (
-                    <CardEvaluasi title={v?.nmkategori} totalQuestion={9} />
+                    <CardEvaluasi
+                      id={v.id}
+                      id_diklat={v.id_diklat}
+                      id_kategori={v.id_kategori}
+                      id_master_diklat={v.id_master_diklat}
+                      title={v?.nmkategori}
+                      total_pertanyaan={v?.total_pertanyaan}
+                      userData={esdm_survey}
+                      fetchData={() => fetchData()}
+                      fetchHasSurveyData={() => fetchHasSurveyData()}
+                      nmkategori={v.nmkategori}
+                      status={status}
+                      totalTerjawab={v.total_terjawab}
+                    />
                   )
+                }
               })}
           </div>
         </Col>

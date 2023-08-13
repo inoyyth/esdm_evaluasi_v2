@@ -20,10 +20,13 @@ type Props = {
 }
 
 export type Model = {
-  id: string
-  judul: string
-  id_kategori: string
-  id_master_diklat: string
+  id: string | number
+  id_diklat?: number
+  judul: string | number
+  id_kategori: string | number
+  id_master_diklat: string | number
+  id_jadwal_diklat?: number
+  id_user?: number
   jadwal: {
     waktu_mulai: string
     waktu_selesai: string
@@ -118,7 +121,7 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
             onClick={() =>
               handleSearch(selectedKeys as string[], confirm, dataIndex)
             }
-            icon={<SearchOutlined />}
+            icon={<SearchOutlined rev={null} />}
             size="small"
             style={{ width: 90 }}
           >
@@ -135,7 +138,10 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
       </div>
     ),
     filterIcon: (filtered: boolean) => (
-      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+      <SearchOutlined
+        rev={null}
+        style={{ color: filtered ? "#1890ff" : undefined }}
+      />
     ),
     onFilter: (value, record) =>
       record[dataIndex]

@@ -21,7 +21,7 @@ const SurveyComponent: FunctionComponent<Props> = (props: Props) => {
   const { data, model, idJadwalDiklat, userData, idPengajar } = props
 
   const surveyJson = {
-    pages: data?.data,
+    pages: data?.data?.questions,
     visiblePages: true,
     widthMode: "responsive",
     pagePrevText: "Sebelumnya",
@@ -41,6 +41,8 @@ const SurveyComponent: FunctionComponent<Props> = (props: Props) => {
 
   // Create a Model
   const survey = new Survey.Model(surveyJson)
+  survey.sendResultOnPageNext = true
+  survey.currentPageNo = data?.data?.total_has_answered
 
   survey.onComplete.add((question: any) => {
     axios
@@ -50,10 +52,39 @@ const SurveyComponent: FunctionComponent<Props> = (props: Props) => {
           id_evaluasi: model?.id,
           id_user: userData?.id,
           id_diklat: model?.id_diklat,
-          id_jadwal_diklat: idJadwalDiklat?.id,
+          id_jadwal_diklat: idJadwalDiklat,
           detail_answer: question.data,
           id_pengajar: idPengajar,
         },
+      })
+      .then((res: any) => {
+        // console.log("response", res)
+      })
+  })
+
+  // Save survey results
+  survey.onPartialSend.add((sender: Survey.SurveyModel, options: any) => {
+    const questions = data?.data?.questions
+    const currentPage = sender.currentPageNo
+
+    const element_1 = questions[currentPage].elements[0].name
+    const element_2 = questions[currentPage].elements[1].name
+    let asw: any = {}
+    asw[element_1] = sender.data?.[element_1]
+    asw[element_2] = sender.data?.[element_2]
+    const prm = {
+      id_kategori: model?.id_kategori,
+      id_evaluasi: model?.id,
+      id_user: userData?.id,
+      id_diklat: model?.id_diklat,
+      id_jadwal_diklat: idJadwalDiklat,
+      detail_answer: asw,
+      id_pengajar: idPengajar,
+    }
+
+    axios
+      .post("/api/answer-temporary", {
+        data: prm,
       })
       .then((res: any) => {
         console.log("response", res)

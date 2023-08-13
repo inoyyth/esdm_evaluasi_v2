@@ -36,3 +36,55 @@ a {
 .ant-drawer-content-wrapper .ant-drawer-header-title {
   flex-direction: row-reverse;
 }
+
+.ant-modal-body {
+  padding-top: 12px !important;
+}
+
+.sv-footer.sv-action-bar {
+  display: flex !important;
+  justify-content: space-evenly !important;
+}
+
+.sv-btn.sv-action-bar-item,
+.sv-btn {
+  padding: 8px 12px !important;
+}
+
+.sv-footer.sv-action-bar {
+  padding: 0 !important;
+}
+
+.sv-footer__prev-btn {
+  background-color: rgb(255, 229, 0, 1) !important;
+  color: gray !important;
+}
+
+.sv-row:not(:last-child) {
+  padding-bottom: 4px !important;
+}
+
+.sv-body__timer,
+.sv-body__page,
+.sv-body__footer.sv-footer.sv-action-bar {
+  margin-top: 16px !important;
+}
+
+.sv-container-modern {
+  margin-top: 24px !important;
+}
+
+.sv-completedpage {
+  padding-top: 32px !important;
+  height: auto !important;
+}
+
+.sv-completedpage h3 {
+  font-size: 24px !important;
+  margin-top: 24px !important;
+}
+
+.sv-question__title {
+  font-size: 15px !important;
+  font-weight: "Times New Roman", Times, serif !important;
+}
