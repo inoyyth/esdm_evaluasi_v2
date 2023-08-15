@@ -84,28 +84,30 @@ const CardEvaluasi: FunctionComponent<Props> = (props: Props) => {
             {isPengajar && `Materi`} {title}
           </div>
           {!isUndefined(pengajar) && (
-            <div className="mt-2 text-xs">Pengajar: {pengajar}</div>
+            <div className="mt-2 text-xs">
+              <b>Pengajar</b>: {pengajar}
+            </div>
           )}
           {!isUndefined(waktu_mulai) && !isUndefined(waktu_selesai) && (
             <>
               <div className="mt-2 text-xs">
-                Waktu Mulai:{" "}
+                <b>Waktu Mulai</b>:{" "}
                 {moment(waktu_mulai).format("ddd, D MMM YYYY HH:mm:ss")}
               </div>
               <div className="mt-2 text-xs">
-                Waktu Selesai:{" "}
+                <b>Waktu Selesai</b>:{" "}
                 {moment(waktu_selesai).format("ddd, D MMM YYYY HH:mm:ss")}
               </div>
             </>
           )}
           <div className="mt-2">
             <span className="text-xs">
-              Jumlah Pertanyaan: {total_pertanyaan}
+              <b>Jumlah Pertanyaan</b>: {total_pertanyaan}
             </span>
           </div>
           <div className="mt-2">
             <span className="text-xs">
-              Pertanyaan Terjawab:{" "}
+              <b>Pertanyaan Terjawab</b>:{" "}
               {status === "finished" ? total_pertanyaan : totalTerjawab}
             </span>
           </div>

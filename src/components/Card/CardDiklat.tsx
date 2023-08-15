@@ -20,6 +20,7 @@ type Props = {
   tanggal_selesai: string
   jadwal: any[]
   metode_pelaksanaan: string
+  detail_evaluasi?: any
 }
 
 const CardDiklat: FunctionComponent<Props> = (props: Props) => {
@@ -34,6 +35,7 @@ const CardDiklat: FunctionComponent<Props> = (props: Props) => {
     metode_pelaksanaan,
     jadwal,
     id_diklat,
+    detail_evaluasi,
   } = props
   return (
     <Wrapper>
@@ -66,22 +68,24 @@ const CardDiklat: FunctionComponent<Props> = (props: Props) => {
             {moment(tanggal_selesai).format("ddd, D MMM YYYY")}
           </div>
         </div>
-        <div className="px-3 py-1 bg-slate-200">
-          <div className="flex justify-between gap-3">
-            <div className="flex items-center">
-              <ExportOutlined rev={null} />
-              <span>10</span>
-            </div>
-            <div className="flex items-center">
-              <CheckCircleOutlined rev={null} style={{ color: "green" }} />
-              <span>10</span>
-            </div>
-            <div className="flex items-center">
-              <WarningOutlined rev={null} style={{ color: "red" }} />
-              <span>10</span>
+        {detail_evaluasi && (
+          <div className="px-3 py-1 bg-slate-200">
+            <div className="flex justify-between gap-3">
+              <div className="flex items-center">
+                <ExportOutlined rev={null} />
+                <span className="ml-1">{detail_evaluasi?.total_survey}</span>
+              </div>
+              <div className="flex items-center">
+                <CheckCircleOutlined rev={null} style={{ color: "green" }} />
+                <span className="ml-1">{detail_evaluasi?.survey_answered}</span>
+              </div>
+              <div className="flex items-center">
+                <WarningOutlined rev={null} style={{ color: "red" }} />
+                <span className="ml-1">{detail_evaluasi?.rest_survey}</span>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </Card>
     </Wrapper>
   )

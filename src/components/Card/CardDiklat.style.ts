@@ -5,7 +5,7 @@ export const Wrapper = styled.div`
     border-radius: 8px !important;
   }
   .ant-card-head-title {
-    white-space: normal !imporatant;
+    white-space: normal !important;
   }
   .ant-card-head {
     background-color: #1890ff !important;

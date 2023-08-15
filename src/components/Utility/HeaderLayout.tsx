@@ -68,27 +68,9 @@ const HeaderLayout: FunctionComponent<Props> = (props: Props) => {
 
   return (
     <Wrapper>
-      <Header className="h-full p-0 header bg-lightYellow">
+      <Header className="h-auto p-0">
         <Row>
-          <Col span={24} sm={24} xs={24}>
-            <div className="flex justify-between px-4 font-bold logo md:justify-start">
-              <div>
-                Hi, <span className="underline">{nama_depan}</span>
-              </div>
-              {/* <div>
-                <MenuOutlined
-                  rev={null}
-                  style={{ color: "#000" }}
-                  onClick={() => {
-                    setDrawerOpen(true)
-                  }}
-                />
-              </div> */}
-            </div>
-          </Col>
-        </Row>
-        <Row>
-          <Col span={24} className="px-4 py-2 bg-gray-200">
+          <Col span={24} className="px-4 py-2 bg-black">
             <div className="flex justify-between">
               <Button
                 type="primary"
@@ -115,7 +97,13 @@ const HeaderLayout: FunctionComponent<Props> = (props: Props) => {
             </div>
           </Col>
         </Row>
+        <Row>
+          <Col span={24} sm={24} xs={24}>
+            <div className="w-full h-[100px] md:h-[250px] bg-headerBanner bg-cover bg-center"></div>
+          </Col>
+        </Row>
       </Header>
+      <div className="px-4 font-bold bg-gray-200">{nama_depan}</div>
       <Drawer
         title="Menu"
         placement="right"

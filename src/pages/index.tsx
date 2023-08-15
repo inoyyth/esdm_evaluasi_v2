@@ -113,8 +113,11 @@ const Home: NextPage<Props> = (props: Props) => {
       </Row> */}
       <Row>
         <Col span={24} className="px-4 py-4 mb-8">
-          <div className="mb-2 text-base font-bold">
+          <div className="mb-2 text-base font-bold border-b-[1px] border-black border-solid">
             Daftar Pelatihan yang diikuti
+          </div>
+          <div className="mb-2 text-rose-600">
+            Pilih Diklat untuk mengisi survey/evaluasi
           </div>
           <div className="flex flex-col gap-4">
             {listSurvey.data.map((v: any, i: number) => {
