@@ -58,6 +58,7 @@ const Home: NextPage<Props> = (props: Props) => {
           sortdatafield: "id",
           sortorder: "desc",
           id_peserta: esdm_survey?.id,
+          is_published: true,
           group_by: "id_diklat",
         },
       })

@@ -37,8 +37,8 @@ const Login: FunctionComponent = () => {
   }
 
   return (
-    <div className="bg-lightYellow">
-      <div className="flex flex-col md:flex-row items-center justify-between h-[100vh] gap-8 md:gap-0">
+    <div className="bg-white p-4">
+      <div className="flex flex-col md:flex-row items-center justify-between h-[95vh] gap-8 md:gap-0">
         <div className="w-full mt-8 md:mt-auto md:w-1/2">
           <div className="text-[30px] md:text-[50px] font-bold text-center">
             SISTEM INFORMASI EVALUASI TERINTEGRASI
@@ -54,7 +54,7 @@ const Login: FunctionComponent = () => {
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
               autoComplete="off"
-              className="w-auto p-6 border-2 border-white border-solid rounded-tl-xl rounded-br-xl md:pr-12 md:pt-12"
+              className="w-auto p-6 border-2 border-slate-500 border-solid rounded-tl-xl rounded-br-xl md:pr-12 md:pt-12"
               layout="vertical"
             >
               <Form.Item
