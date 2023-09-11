@@ -44,6 +44,7 @@ const Home: NextPage<Props> = (props: Props) => {
           sortdatafield: "id",
           sortorder: "desc",
           id_user: esdm_survey?.id,
+          id_diklat: idDiklat,
         },
       })
       .then((res: any) => {
