@@ -10,7 +10,7 @@ import Footer from "@components/Utility/FooterLayout"
 import { useState } from "react"
 import React from "react"
 import "antd/dist/antd.css"
-import CardDiklat from "@components/Card/CardDiklat"
+// import CardDiklat from "@components/Card/CardDiklat"
 
 type Props = {
   children: any
@@ -43,10 +43,10 @@ const Home: NextPage<Props> = (props: Props) => {
       <Row>
         <Col span={24} className="px-4 py-4 mb-8">
           <div className="mb-2 text-base font-bold">List Evaluasi</div>
-          <div className="flex flex-col gap-4">
+          {/* <div className="flex flex-col gap-4">
             <CardDiklat />
             <CardDiklat />
-          </div>
+          </div> */}
         </Col>
       </Row>
       <Row className="fixed w-full h-4 bottom-5">

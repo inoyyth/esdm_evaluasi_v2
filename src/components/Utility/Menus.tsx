@@ -33,7 +33,7 @@ const Menus: FunctionComponent<Props> = (props: Props) => {
     const menu: MenuProps["items"] = [
       {
         key: "dashboard",
-        icon: <LaptopOutlined />,
+        icon: <LaptopOutlined rev={null} />,
         label: "Dashboard",
         onClick: (item) => {
           window.location.replace("/")
@@ -41,7 +41,7 @@ const Menus: FunctionComponent<Props> = (props: Props) => {
       },
       {
         key: "survey",
-        icon: <LaptopOutlined />,
+        icon: <LaptopOutlined rev={null} />,
         label: "Survey",
         children: [
           {

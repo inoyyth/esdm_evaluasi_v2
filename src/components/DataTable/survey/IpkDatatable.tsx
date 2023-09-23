@@ -114,7 +114,7 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
             onClick={() =>
               handleSearch(selectedKeys as string[], confirm, dataIndex)
             }
-            icon={<SearchOutlined />}
+            icon={<SearchOutlined rev={null} />}
             size="small"
             style={{ width: 90 }}
           >
@@ -131,7 +131,10 @@ const ListSurveyDatatable: FunctionComponent<Props> = (props: Props) => {
       </div>
     ),
     filterIcon: (filtered: boolean) => (
-      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+      <SearchOutlined
+        rev={null}
+        style={{ color: filtered ? "#1890ff" : undefined }}
+      />
     ),
     onFilter: (value, record) =>
       record[dataIndex]
