@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react"
+import { FunctionComponent, useCallback } from "react"
 import * as Survey from "survey-react"
 import "survey-core/defaultV2.min.css"
 import "survey-core/modern.min.css"
@@ -8,17 +8,24 @@ import "nouislider/dist/nouislider.min.css"
 import * as widgets from "surveyjs-widgets"
 import axios from "axios"
 import { Wrapper } from "./SurveyComponent.style"
+import { find, isUndefined } from "lodash"
 
 type Props = {
   data: any
+  scoring: any
   model: any
   idJadwalDiklat?: any
   userData: any
   idPengajar?: any
 }
 
+type IconType = {
+  text: string
+  image: string
+}
+
 const SurveyComponent: FunctionComponent<Props> = (props: Props) => {
-  const { data, model, idJadwalDiklat, userData, idPengajar } = props
+  const { data, model, idJadwalDiklat, userData, idPengajar, scoring } = props
 
   const surveyJson = {
     pages: data?.data?.questions,
@@ -87,27 +94,104 @@ const SurveyComponent: FunctionComponent<Props> = (props: Props) => {
         data: prm,
       })
       .then((res: any) => {
-        console.log("response", res)
+        // console.log("response", res)
       })
   })
 
+  const getTextSlider = useCallback(
+    (value: number): IconType => {
+      let text = "Baik"
+      let image =
+        "https://res.cloudinary.com/abbifam-com/image/upload/v1698512332/png-transparent-smile-emoji-face-with-tears-of-joy-emoji-smiley-happiness-emoticon-emoji-computer-icons-world-emoji-day-symbol-thumbnail_ounkbs.png"
+      if (scoring) {
+        const { data: scr } = scoring
+        const sangat_baik = find(
+          scr,
+          (o: any) => o.type === "KRITERIA" && o.title === "SANGAT BAIK"
+        )
+        const baik = find(
+          scr,
+          (o: any) => o.type === "KRITERIA" && o.title === "BAIK"
+        )
+        const cukup = find(
+          scr,
+          (o: any) => o.type === "KRITERIA" && o.title === "CUKUP"
+        )
+
+        const kurang_baik = find(
+          scr,
+          (o: any) => o.type === "KRITERIA" && o.title === "KURANG"
+        )
+
+        if (value >= sangat_baik.min) {
+          text = "Sangat Baik"
+          image =
+            "https://res.cloudinary.com/abbifam-com/image/upload/v1698512823/png-transparent-whip-emoticon-emoticon-smiley-wink-emoji-emoji-miscellaneous-bing-thumb-signal-thumbnail_gg9sd1.png"
+        } else if (value >= baik.min) {
+          text = "Baik"
+          image =
+            "https://res.cloudinary.com/abbifam-com/image/upload/v1698512332/png-transparent-smile-emoji-face-with-tears-of-joy-emoji-smiley-happiness-emoticon-emoji-computer-icons-world-emoji-day-symbol-thumbnail_ounkbs.png"
+        } else if (value >= cukup.min) {
+          text = "Cukup Baik"
+          image =
+            "https://res.cloudinary.com/abbifam-com/image/upload/v1698512956/png-transparent-iphone-emoji-sadness-smiley-emoji-electronics-face-emoticon-thumbnail_dtjsnx.png"
+        } else if (value >= kurang_baik.min) {
+          text = "Kurang Baik"
+          image =
+            "https://res.cloudinary.com/abbifam-com/image/upload/v1698512332/png-transparent-sad-emoji-art-face-with-tears-of-joy-emoji-crying-emoticon-cry-smiley-sphere-computer-icons-thumbnail_s1f4tj.png"
+        } else {
+          text = "Buruk"
+          image =
+            "https://res.cloudinary.com/abbifam-com/image/upload/v1698512332/png-transparent-emoji-sadness-emoticon-smiley-sad-emoji-crying-imoji-face-sticker-desktop-wallpaper-thumbnail_yk4xkr.png"
+        }
+      }
+
+      return { text, image }
+    },
+    [scoring]
+  )
+
   survey.onValueChanged.add((result: any, options: any) => {
-    const value = options?.value
+    const value: number = options?.value
     const x = document.querySelector(".noUi-tooltip")
+    const y = document.querySelector(".noUi-touch-area")
     let text = "Baik"
-    if (value >= 90.01) {
-      text = "Sangat Baik"
-    } else if (value >= 80.01) {
-      text = "Baik"
-    } else if (value >= 70.01) {
-      text = "Cukup Baik"
-    } else if (value >= 60.01) {
-      text = "Kurang Baik"
+    let img =
+      "https://res.cloudinary.com/abbifam-com/image/upload/v1698512332/png-transparent-smile-emoji-face-with-tears-of-joy-emoji-smiley-happiness-emoticon-emoji-computer-icons-world-emoji-day-symbol-thumbnail_ounkbs.png"
+    if (!scoring) {
+      if (value >= 90.01) {
+        text = "Sangat Baik"
+        img =
+          "https://res.cloudinary.com/abbifam-com/image/upload/v1698512823/png-transparent-whip-emoticon-emoticon-smiley-wink-emoji-emoji-miscellaneous-bing-thumb-signal-thumbnail_gg9sd1.png"
+      } else if (value >= 80.01) {
+        text = "Baik"
+        img =
+          "https://res.cloudinary.com/abbifam-com/image/upload/v1698512332/png-transparent-smile-emoji-face-with-tears-of-joy-emoji-smiley-happiness-emoticon-emoji-computer-icons-world-emoji-day-symbol-thumbnail_ounkbs.png"
+      } else if (value >= 70.01) {
+        text = "Cukup Baik"
+        img =
+          "https://res.cloudinary.com/abbifam-com/image/upload/v1698512956/png-transparent-iphone-emoji-sadness-smiley-emoji-electronics-face-emoticon-thumbnail_dtjsnx.png"
+      } else if (value >= 60.01) {
+        text = "Kurang Baik"
+        img =
+          "https://res.cloudinary.com/abbifam-com/image/upload/v1698512332/png-transparent-sad-emoji-art-face-with-tears-of-joy-emoji-crying-emoticon-cry-smiley-sphere-computer-icons-thumbnail_s1f4tj.png"
+      } else {
+        text = "Buruk"
+        img =
+          "https://res.cloudinary.com/abbifam-com/image/upload/v1698512332/png-transparent-emoji-sadness-emoticon-smiley-sad-emoji-crying-imoji-face-sticker-desktop-wallpaper-thumbnail_yk4xkr.png"
+      }
     } else {
-      text = "Buruk"
+      const r: IconType = getTextSlider(value)
+      text = r.text
+      img = r.image
     }
-    if (x)
-      x.innerHTML += "<p style='margin: 0px;font-size: 12px;'>" + text + "</p>"
+    if (x) {
+      x.innerHTML +=
+        "<p style='font-size:12px;margin-bottom:0px;'>" + text + "</p>"
+    }
+    if (y) {
+      y.innerHTML = `<img src="${img}" style='padding:4px;'/>`
+    }
   })
 
   return (

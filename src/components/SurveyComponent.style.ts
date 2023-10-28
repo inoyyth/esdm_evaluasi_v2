@@ -12,4 +12,7 @@ export const Wrapper = styled.div`
     left: 100%;
     transform: translate(-65%, 0);
   }
+  .noUi-tooltip {
+    margin-bottom: 10px !important;
+  }
 `

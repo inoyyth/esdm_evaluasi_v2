@@ -221,8 +221,7 @@ const Home: NextPage<Props> = (props: Props) => {
                       } else {
                         status = "new"
                       }
-                      console.log("isfinish", isFinish)
-                      console.log("total_terjawab", v.total_terjawab)
+
                       return (
                         <CardEvaluasi
                           id={v.id}
@@ -263,7 +262,6 @@ export const getServerSideProps: GetServerSideProps<any> = async (
   const authCookies: string = c["esdm_survey"]
   const jwtData: any = jwt.decode(authCookies)
   if (!isNil(authCookies)) {
-    console.log(authCookies)
     return {
       props: {
         idDiklat: idDiklat,

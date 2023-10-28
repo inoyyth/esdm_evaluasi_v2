@@ -21,6 +21,7 @@ const Survey: FunctionComponent<Props> = (props: Props) => {
   const { model, idJadwalDiklat, userData, isPengajar, pengajar, idPengajar } =
     props
   const [data, setData] = useState<any>(null)
+  const [scoring, setScoring] = useState<any>(null)
 
   const fetchData: Function = async () => {
     axios
@@ -39,13 +40,24 @@ const Survey: FunctionComponent<Props> = (props: Props) => {
       })
       .then((res: any) => {
         setData(res?.data)
-        console.log("res", res)
+      })
+  }
+
+  const fetchScoring: Function = async () => {
+    axios
+      .get(`/api/scoring/${model?.id_kategori}`, {
+        params: {},
+      })
+      .then((res: any) => {
+        setScoring(res?.data)
       })
   }
 
   useEffect(() => {
     fetchData()
+    fetchScoring()
   }, [model])
+
   return (
     <div>
       {isPengajar === true && (
@@ -60,6 +72,7 @@ const Survey: FunctionComponent<Props> = (props: Props) => {
       )}
       <SurveyComponent
         data={data}
+        scoring={scoring}
         model={model}
         idJadwalDiklat={idJadwalDiklat}
         userData={userData}
