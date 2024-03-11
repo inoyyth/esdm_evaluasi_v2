@@ -10,6 +10,10 @@ const Survey = dynamic(() => import("@components/Modal/Survey"), {
   ssr: false,
 })
 
+const Tracer = dynamic(() => import("@components/Modal/Tracer"), {
+  ssr: false,
+})
+
 type Props = {
   id: string | number
   id_diklat: number
@@ -26,6 +30,7 @@ type Props = {
   fetchHasSurveyData?: () => void
   userData: any
   isPengajar?: boolean
+  isTracer?: boolean
   nmkategori: string
   status?: "finished" | "pending" | "new"
   totalTerjawab?: number
@@ -49,10 +54,12 @@ const CardEvaluasi: FunctionComponent<Props> = (props: Props) => {
     id_jadwal,
     nmkategori,
     id_pengajar,
+    isTracer,
     status = "new",
     totalTerjawab = 0,
   } = props
   const [showSurvey, setShowSurvey] = useState<boolean>(false)
+  const [showTracer, setShowTracer] = useState<boolean>(false)
 
   const model: Model = {
     id: id,
@@ -123,7 +130,13 @@ const CardEvaluasi: FunctionComponent<Props> = (props: Props) => {
               className="w-full rounded-b-xl"
               type="primary"
               danger
-              onClick={() => setShowSurvey(true)}
+              onClick={() => {
+                if (isTracer) {
+                  setShowTracer(true)
+                } else {
+                  setShowSurvey(true)
+                }
+              }}
             >
               Mulai Survey
             </Button>
@@ -131,7 +144,13 @@ const CardEvaluasi: FunctionComponent<Props> = (props: Props) => {
           {status === "pending" && (
             <Button
               className="w-full bg-yellow-300 rounded-b-xl"
-              onClick={() => setShowSurvey(true)}
+              onClick={() => {
+                if (isTracer) {
+                  setShowTracer(true)
+                } else {
+                  setShowSurvey(true)
+                }
+              }}
             >
               Lanjutkan Survey
             </Button>
@@ -161,6 +180,32 @@ const CardEvaluasi: FunctionComponent<Props> = (props: Props) => {
           isPengajar={isPengajar}
           idJadwalDiklat={id_jadwal}
           idPengajar={id_pengajar}
+        />
+      </Modal>
+      <Modal
+        title={`Survey ${nmkategori}`}
+        open={showTracer}
+        // onOk={handleOk}
+        className="w-full sm:w-[700px]"
+        onCancel={() => {
+          if (!isUndefined(fetchData)) {
+            fetchData()
+          }
+          if (!isUndefined(fetchHasSurveyData)) {
+            fetchHasSurveyData()
+          }
+          setShowTracer(false)
+        }}
+        footer={null}
+      >
+        <Tracer
+          model={model}
+          userData={userData}
+          pengajar={pengajar}
+          isPengajar={isPengajar}
+          idJadwalDiklat={id_jadwal}
+          idPengajar={id_pengajar}
+          hideModal={() => setShowTracer(false)}
         />
       </Modal>
     </Wrapper>

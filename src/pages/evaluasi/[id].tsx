@@ -34,6 +34,7 @@ const Home: NextPage<Props> = (props: Props) => {
     total: 0,
   })
   const [hasAnswered, setHasAnswered] = useState<any>(null)
+  const [totalSurveyPengajar, setTotalSurveyPengajar] = useState<number>(0)
 
   const fetchHasSurveyData: Function = async () => {
     axios
@@ -66,10 +67,13 @@ const Home: NextPage<Props> = (props: Props) => {
         },
       })
       .then((res: any) => {
+        const dt = res?.data?.data
         setListSurvey({
-          data: res?.data?.data,
+          data: dt,
           total: res?.data?.meta?.pagination?.total,
         })
+        const findPengajar = dt.find((x: any) => x.is_multiple)
+        setTotalSurveyPengajar(findPengajar.length)
       })
   }
 
@@ -149,59 +153,61 @@ const Home: NextPage<Props> = (props: Props) => {
           </Collapse>
         </Col>
       </Row>
-      <Row>
-        <Col span={24} className="px-4">
-          {/* <div className="font-bold underline">Evaluasi Tenaga Pengajar</div> */}
-          <Collapse defaultActiveKey={["1"]} key={1}>
-            <Panel header="Evaluasi Tenaga Pengajar" key="1">
-              <div className="flex flex-col gap-3 pt-0">
-                {!isEmpty(listSurvey.data) &&
-                  listSurvey.data.map((v: any) => {
-                    if (v?.is_multiple === true) {
-                      return v.jadwal.map((j: any, i: number) => {
-                        let status: any
-                        const isFinish = findIndex(hasAnswered, {
-                          id_evaluasi: v?.id,
-                          id_jadwal_diklat: j?.id,
-                        })
-                        if (isFinish >= 0) {
-                          status = "finished"
-                        } else if (j.total_terjawab > 0) {
-                          status = "pending"
-                        } else {
-                          status = "new"
-                        }
+      {totalSurveyPengajar > 0 && (
+        <Row>
+          <Col span={24} className="px-4">
+            {/* <div className="font-bold underline">Evaluasi Tenaga Pengajar</div> */}
+            <Collapse defaultActiveKey={["1"]} key={1}>
+              <Panel header="Evaluasi Tenaga Pengajar" key="1">
+                <div className="flex flex-col gap-3 pt-0">
+                  {!isEmpty(listSurvey.data) &&
+                    listSurvey.data.map((v: any) => {
+                      if (v?.is_multiple === true) {
+                        return v.jadwal.map((j: any, i: number) => {
+                          let status: any
+                          const isFinish = findIndex(hasAnswered, {
+                            id_evaluasi: v?.id,
+                            id_jadwal_diklat: j?.id,
+                          })
+                          if (isFinish >= 0) {
+                            status = "finished"
+                          } else if (j.total_terjawab > 0) {
+                            status = "pending"
+                          } else {
+                            status = "new"
+                          }
 
-                        return (
-                          <CardEvaluasi
-                            id={v.id}
-                            id_diklat={v.id_diklat}
-                            id_kategori={v.id_kategori}
-                            id_master_diklat={v.id_master_diklat}
-                            id_jadwal={j.id}
-                            title={j?.materi}
-                            id_pengajar={j.pengajar}
-                            pengajar={j.nama_depan}
-                            total_pertanyaan={v.total_pertanyaan}
-                            waktu_mulai={j.waktu_mulai}
-                            waktu_selesai={j.waktu_selesai}
-                            userData={esdm_survey}
-                            fetchData={() => fetchData()}
-                            fetchHasSurveyData={() => fetchHasSurveyData()}
-                            isPengajar={true}
-                            nmkategori={v.nmkategori}
-                            status={status}
-                            totalTerjawab={j.total_terjawab}
-                          />
-                        )
-                      })
-                    }
-                  })}
-              </div>
-            </Panel>
-          </Collapse>
-        </Col>
-      </Row>
+                          return (
+                            <CardEvaluasi
+                              id={v.id}
+                              id_diklat={v.id_diklat}
+                              id_kategori={v.id_kategori}
+                              id_master_diklat={v.id_master_diklat}
+                              id_jadwal={j.id}
+                              title={j?.materi}
+                              id_pengajar={j.pengajar}
+                              pengajar={j.nama_depan}
+                              total_pertanyaan={v.total_pertanyaan}
+                              waktu_mulai={j.waktu_mulai}
+                              waktu_selesai={j.waktu_selesai}
+                              userData={esdm_survey}
+                              fetchData={() => fetchData()}
+                              fetchHasSurveyData={() => fetchHasSurveyData()}
+                              isPengajar={true}
+                              nmkategori={v.nmkategori}
+                              status={status}
+                              totalTerjawab={j.total_terjawab}
+                            />
+                          )
+                        })
+                      }
+                    })}
+                </div>
+              </Panel>
+            </Collapse>
+          </Col>
+        </Row>
+      )}
       <Row>
         <Col span={24} className="px-4 mt-4 mb-10">
           <Collapse defaultActiveKey={["1"]} key={1}>
@@ -236,6 +242,7 @@ const Home: NextPage<Props> = (props: Props) => {
                           nmkategori={v.nmkategori}
                           status={status}
                           totalTerjawab={v.total_terjawab}
+                          isTracer={v?.is_tracer}
                         />
                       )
                     }
