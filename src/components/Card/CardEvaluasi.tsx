@@ -205,7 +205,15 @@ const CardEvaluasi: FunctionComponent<Props> = (props: Props) => {
           isPengajar={isPengajar}
           idJadwalDiklat={id_jadwal}
           idPengajar={id_pengajar}
-          hideModal={() => setShowTracer(false)}
+          hideModal={() => {
+            if (!isUndefined(fetchData)) {
+              fetchData()
+            }
+            if (!isUndefined(fetchHasSurveyData)) {
+              fetchHasSurveyData()
+            }
+            setShowTracer(false)
+          }}
         />
       </Modal>
     </Wrapper>

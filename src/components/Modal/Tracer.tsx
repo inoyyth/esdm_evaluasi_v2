@@ -42,7 +42,7 @@ const Tracer: FunctionComponent<Props> = (props: Props) => {
         },
       })
       .then((res: any) => {
-        // console.log("response", res)
+        hideModal()
       })
   }
 
