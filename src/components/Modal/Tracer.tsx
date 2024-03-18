@@ -115,6 +115,7 @@ const Tracer: FunctionComponent<Props> = (props: Props) => {
                           Yang Lain:
                           <Input
                             style={{ width: "100%", marginLeft: 0 }}
+                            placeholder="Isi bila pilih lainnya"
                             onChange={(e) => {
                               form.setFieldValue(
                                 `${v?.elements[0].name}_lainnya`,
@@ -133,7 +134,7 @@ const Tracer: FunctionComponent<Props> = (props: Props) => {
                     name={`${v?.elements[0].name}_lainnya`}
                     hidden
                   >
-                    <Input placeholder="Isi jawaban" />
+                    <Input placeholder="Isi bila pilih lainnya" />
                   </Form.Item>
                 )}
                 {v?.elements[0]?.withPenjelasan && (
@@ -161,20 +162,46 @@ const Tracer: FunctionComponent<Props> = (props: Props) => {
             const options = v?.elements[0]?.choices?.map((cx: any) => {
               return { label: cx.text, value: cx.value }
             })
+            if (v?.elements[0]?.withLainnya) {
+              options.push({
+                label: "Lainnya",
+                value: `${v?.elements[0].name}_lainnya_hidden`,
+              })
+            }
+
             return (
-              <Form.Item
-                label={v?.elements[0]?.title}
-                name={v?.elements[0]?.name}
-                required={v?.elements[0].isRequired}
-                rules={[
-                  {
-                    required: v?.elements[0].isRequired,
-                    message: "wajib pilih minimal satu",
-                  },
-                ]}
-              >
-                <CheckboxGroup options={options} />
-              </Form.Item>
+              <>
+                <Form.Item
+                  label={v?.elements[0]?.title}
+                  name={v?.elements[0]?.name}
+                  required={v?.elements[0].isRequired}
+                  rules={[
+                    {
+                      required: v?.elements[0].isRequired,
+                      message: "wajib pilih minimal satu",
+                    },
+                  ]}
+                >
+                  <CheckboxGroup options={options} />
+                </Form.Item>
+                {v?.elements[0]?.withLainnya && (
+                  <Form.Item
+                    label={``}
+                    name={`${v?.elements[0].name}_lainnya`}
+                    rules={[
+                      {
+                        required: false,
+                        message: "wajib isi",
+                      },
+                    ]}
+                  >
+                    <Input
+                      placeholder="Isi bila pilih lainnya"
+                      style={{ width: "45%", marginLeft: 0 }}
+                    />
+                  </Form.Item>
+                )}
+              </>
             )
           }
 
