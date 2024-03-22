@@ -17,6 +17,7 @@ type Props = {
   idJadwalDiklat?: any
   userData: any
   idPengajar?: any
+  closing?: any
 }
 
 type IconType = {
@@ -25,7 +26,15 @@ type IconType = {
 }
 
 const SurveyComponent: FunctionComponent<Props> = (props: Props) => {
-  const { data, model, idJadwalDiklat, userData, idPengajar, scoring } = props
+  const {
+    data,
+    model,
+    idJadwalDiklat,
+    userData,
+    idPengajar,
+    scoring,
+    closing,
+  } = props
 
   const surveyJson = {
     pages: data?.data?.questions,
@@ -36,7 +45,9 @@ const SurveyComponent: FunctionComponent<Props> = (props: Props) => {
     completeText: "Selesaikan",
     startSurveyText: "Mulai",
     questionDescriptionLocation: "underInput",
-    completedHtml: "<h3>Terima kasih, Anda telah menyelesaikan Survey</h3>",
+    completedHtml: closing
+      ? closing
+      : "<h3>Terima kasih, Anda telah menyelesaikan Survey</h3>",
     firstPageIsStarted: false,
     showProgressBar: "bottom",
     showQuestionNumbers: "off",

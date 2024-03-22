@@ -34,6 +34,8 @@ type Props = {
   nmkategori: string
   status?: "finished" | "pending" | "new"
   totalTerjawab?: number
+  opening?: any
+  closing?: any
 }
 
 const CardEvaluasi: FunctionComponent<Props> = (props: Props) => {
@@ -57,9 +59,12 @@ const CardEvaluasi: FunctionComponent<Props> = (props: Props) => {
     isTracer,
     status = "new",
     totalTerjawab = 0,
+    closing,
+    opening,
   } = props
   const [showSurvey, setShowSurvey] = useState<boolean>(false)
   const [showTracer, setShowTracer] = useState<boolean>(false)
+  const [showOpening, setShowOpening] = useState<boolean>(false)
 
   const model: Model = {
     id: id,
@@ -131,10 +136,14 @@ const CardEvaluasi: FunctionComponent<Props> = (props: Props) => {
               type="primary"
               danger
               onClick={() => {
-                if (isTracer) {
-                  setShowTracer(true)
+                if (opening) {
+                  setShowOpening(true)
                 } else {
-                  setShowSurvey(true)
+                  if (isTracer) {
+                    setShowTracer(true)
+                  } else {
+                    setShowSurvey(true)
+                  }
                 }
               }}
             >
@@ -180,6 +189,7 @@ const CardEvaluasi: FunctionComponent<Props> = (props: Props) => {
           isPengajar={isPengajar}
           idJadwalDiklat={id_jadwal}
           idPengajar={id_pengajar}
+          closing={closing}
         />
       </Modal>
       <Modal
@@ -214,7 +224,29 @@ const CardEvaluasi: FunctionComponent<Props> = (props: Props) => {
             }
             setShowTracer(false)
           }}
+          closing={closing}
         />
+      </Modal>
+      <Modal
+        title={`Pengantar`}
+        open={showOpening}
+        // onOk={handleOk}
+        className="w-full sm:w-[700px]"
+        onOk={() => {
+          if (isTracer) {
+            setShowTracer(true)
+          } else {
+            setShowSurvey(true)
+          }
+          setShowOpening(false)
+        }}
+        onCancel={() => {
+          setShowOpening(false)
+        }}
+        okText="Lanjut isi kuesioner"
+        cancelText="Batalkan"
+      >
+        <div dangerouslySetInnerHTML={{ __html: opening }} />
       </Modal>
     </Wrapper>
   )

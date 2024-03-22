@@ -73,7 +73,7 @@ const Home: NextPage<Props> = (props: Props) => {
           total: res?.data?.meta?.pagination?.total,
         })
         const findPengajar = dt.find((x: any) => x.is_multiple)
-        setTotalSurveyPengajar(findPengajar.length)
+        if (findPengajar) setTotalSurveyPengajar(findPengajar.length)
       })
   }
 
@@ -197,6 +197,8 @@ const Home: NextPage<Props> = (props: Props) => {
                               nmkategori={v.nmkategori}
                               status={status}
                               totalTerjawab={j.total_terjawab}
+                              opening={v?.opening}
+                              closing={v?.closing}
                             />
                           )
                         })
@@ -243,6 +245,8 @@ const Home: NextPage<Props> = (props: Props) => {
                           status={status}
                           totalTerjawab={v.total_terjawab}
                           isTracer={v?.is_tracer}
+                          opening={v?.opening}
+                          closing={v?.closing}
                         />
                       )
                     }

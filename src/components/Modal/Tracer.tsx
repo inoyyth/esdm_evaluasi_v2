@@ -1,7 +1,7 @@
 import { FunctionComponent, useEffect, useState } from "react"
 import { Model } from "@components/DataTable/survey/TenagaPengajarDatatable"
 import axios from "axios"
-import { Button, Checkbox, Form, Input, Radio, Space } from "antd"
+import { Button, Checkbox, Form, Input, Modal, Radio, Space } from "antd"
 import { Wrapper } from "./Tracer.style"
 
 type Props = {
@@ -12,6 +12,7 @@ type Props = {
   pengajar?: string
   idPengajar?: any
   hideModal: () => void
+  closing?: any
 }
 
 const Tracer: FunctionComponent<Props> = (props: Props) => {
@@ -23,14 +24,15 @@ const Tracer: FunctionComponent<Props> = (props: Props) => {
     pengajar,
     idPengajar,
     hideModal,
+    closing,
   } = props
   const CheckboxGroup = Checkbox.Group
   const [form] = Form.useForm()
   const [data, setData] = useState<any>(null)
+  const [showClosing, setShowClosing] = useState<boolean>(false)
   // const [show, setShow] = useState<boolean>(false)
 
   const onFinish = (values: any) => {
-    console.log("Success:", values)
     axios
       .post("/api/tracer", {
         data: {
@@ -43,6 +45,7 @@ const Tracer: FunctionComponent<Props> = (props: Props) => {
       })
       .then((res: any) => {
         hideModal()
+        setShowClosing(true)
       })
   }
 
@@ -247,6 +250,18 @@ const Tracer: FunctionComponent<Props> = (props: Props) => {
           </Button>
         </div>
       </Form>
+      <Modal
+        title={`Penutup`}
+        open={showClosing}
+        // onOk={handleOk}
+        className="w-full sm:w-[700px]"
+        onCancel={() => {
+          setShowClosing(false)
+        }}
+        footer={null}
+      >
+        <div dangerouslySetInnerHTML={{ __html: closing }} />
+      </Modal>
     </Wrapper>
   )
 }

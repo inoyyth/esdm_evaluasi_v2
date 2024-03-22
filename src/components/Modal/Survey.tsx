@@ -15,11 +15,19 @@ type Props = {
   isPengajar?: boolean
   pengajar?: string
   idPengajar?: any
+  closing?: any
 }
 
 const Survey: FunctionComponent<Props> = (props: Props) => {
-  const { model, idJadwalDiklat, userData, isPengajar, pengajar, idPengajar } =
-    props
+  const {
+    model,
+    idJadwalDiklat,
+    userData,
+    isPengajar,
+    pengajar,
+    idPengajar,
+    closing,
+  } = props
   const [data, setData] = useState<any>(null)
   const [scoring, setScoring] = useState<any>(null)
 
@@ -77,6 +85,7 @@ const Survey: FunctionComponent<Props> = (props: Props) => {
         idJadwalDiklat={idJadwalDiklat}
         userData={userData}
         idPengajar={idPengajar}
+        closing={closing}
       />
     </div>
   )
