@@ -72,7 +72,8 @@ const Home: NextPage<Props> = (props: Props) => {
           data: dt,
           total: res?.data?.meta?.pagination?.total,
         })
-        const findPengajar = dt.find((x: any) => x.is_multiple)
+        const findPengajar = dt.filter((x: any) => x.is_multiple)
+        console.log("pengajar length", findPengajar.length)
         if (findPengajar) setTotalSurveyPengajar(findPengajar.length)
       })
   }
@@ -157,7 +158,7 @@ const Home: NextPage<Props> = (props: Props) => {
         <Row>
           <Col span={24} className="px-4">
             {/* <div className="font-bold underline">Evaluasi Tenaga Pengajar</div> */}
-            <Collapse defaultActiveKey={["1"]} key={1}>
+            <Collapse>
               <Panel header="Evaluasi Tenaga Pengajar" key="1">
                 <div className="flex flex-col gap-3 pt-0">
                   {!isEmpty(listSurvey.data) &&
@@ -212,12 +213,62 @@ const Home: NextPage<Props> = (props: Props) => {
       )}
       <Row>
         <Col span={24} className="px-4 mt-4 mb-10">
-          <Collapse defaultActiveKey={["1"]} key={1}>
+          <Collapse>
             <Panel header="List Evaluasi/Survey" key="1">
               <div className="flex flex-col gap-3 pt-4">
                 {!isEmpty(listSurvey.data) &&
                   listSurvey.data.map((v: any, i: number) => {
-                    if (v?.is_multiple === false) {
+                    if (
+                      v?.is_multiple === false &&
+                      v?.is_epd === false &&
+                      v?.is_tracer === false
+                    ) {
+                      let status: any
+                      const isFinish = findIndex(hasAnswered, {
+                        id_evaluasi: v?.id,
+                      })
+                      if (isFinish >= 0) {
+                        status = "finished"
+                      } else if (v.total_terjawab > 0) {
+                        status = "pending"
+                      } else {
+                        status = "new"
+                      }
+
+                      return (
+                        <CardEvaluasi
+                          id={v.id}
+                          id_diklat={v.id_diklat}
+                          id_kategori={v.id_kategori}
+                          id_master_diklat={v.id_master_diklat}
+                          title={v?.nmkategori}
+                          total_pertanyaan={v?.total_pertanyaan}
+                          userData={esdm_survey}
+                          fetchData={() => fetchData()}
+                          fetchHasSurveyData={() => fetchHasSurveyData()}
+                          nmkategori={v.nmkategori}
+                          status={status}
+                          totalTerjawab={v.total_terjawab}
+                          isTracer={v?.is_tracer}
+                          opening={v?.opening}
+                          closing={v?.closing}
+                        />
+                      )
+                    }
+                  })}
+              </div>
+            </Panel>
+          </Collapse>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={24} className="px-4 mt-4 mb-10">
+          <Collapse>
+            <Panel header="Pasca Diklat" key="1">
+              <div className="flex flex-col gap-3 pt-4">
+                {!isEmpty(listSurvey.data) &&
+                  listSurvey.data.map((v: any, i: number) => {
+                    if (v?.is_epd === true || v?.is_tracer === true) {
                       let status: any
                       const isFinish = findIndex(hasAnswered, {
                         id_evaluasi: v?.id,
