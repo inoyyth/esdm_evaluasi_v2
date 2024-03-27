@@ -73,7 +73,6 @@ const Home: NextPage<Props> = (props: Props) => {
           total: res?.data?.meta?.pagination?.total,
         })
         const findPengajar = dt.filter((x: any) => x.is_multiple)
-        console.log("pengajar length", findPengajar.length)
         if (findPengajar) setTotalSurveyPengajar(findPengajar.length)
       })
   }

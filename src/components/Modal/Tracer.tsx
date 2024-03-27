@@ -45,7 +45,9 @@ const Tracer: FunctionComponent<Props> = (props: Props) => {
       })
       .then((res: any) => {
         hideModal()
-        setShowClosing(true)
+        if (closing) {
+          setShowClosing(true)
+        }
       })
   }
 
