@@ -60,6 +60,7 @@ const Home: NextPage<Props> = (props: Props) => {
           id_peserta: esdm_survey?.id,
           is_published: true,
           group_by: "id_diklat",
+          pasca_diklat: true,
         },
       })
       .then((res: any) => {
@@ -79,6 +80,7 @@ const Home: NextPage<Props> = (props: Props) => {
           sortdatafield: "id",
           sortorder: "desc",
           id_user: esdm_survey?.id,
+          pasca_diklat: true,
         },
       })
       .then((res: any) => {
@@ -98,31 +100,17 @@ const Home: NextPage<Props> = (props: Props) => {
           <Header userData={esdm_survey} />
         </Col>
       </Row>
-      {/* <Row>
-        <Col span={24} className="px-4 py-2 bg-gray-200">
-          <Breadcrumb>
-            <Breadcrumb.Item>
-              <span className="text-xs">Dashboard</span>
-            </Breadcrumb.Item>
-          </Breadcrumb>
-        </Col>
-      </Row> */}
-      {/* <Row>
-        <Col span={24} className="px-4 py-2">
-          <Doughnut data={data} />
-        </Col>
-      </Row> */}
       <Row>
         <Col span={24} className="px-4 py-4 mb-8">
           <div className="mb-2 text-base font-bold border-b-[1px] border-black border-solid">
-            Daftar Pelatihan yang diikuti
+            Daftar Pasca Diklat
           </div>
           <div className="mb-2 text-rose-600">
-            Pilih Diklat untuk mengisi survey/evaluasi
+            Pilih Pasca Diklat untuk mengisi survey/evaluasi
           </div>
           <div className="flex flex-col gap-4">
             {listSurvey.data.map((v: any, i: number) => {
-              return <CardDiklat key={i} {...v} />
+              return <CardDiklat key={i} {...v} isEpd={true} />
             })}
           </div>
         </Col>

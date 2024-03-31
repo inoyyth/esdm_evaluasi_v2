@@ -21,6 +21,7 @@ type Props = {
   jadwal: any[]
   metode_pelaksanaan: string
   detail_evaluasi?: any
+  isEpd?: boolean
 }
 
 const CardDiklat: FunctionComponent<Props> = (props: Props) => {
@@ -36,6 +37,7 @@ const CardDiklat: FunctionComponent<Props> = (props: Props) => {
     jadwal,
     id_diklat,
     detail_evaluasi,
+    isEpd = false,
   } = props
   return (
     <Wrapper>
@@ -44,7 +46,11 @@ const CardDiklat: FunctionComponent<Props> = (props: Props) => {
         title={
           <div
             className="cursor-pointer"
-            onClick={() => window.location.replace(`/evaluasi/${id_diklat}`)}
+            onClick={() =>
+              window.location.replace(
+                `/evaluasi/${id_diklat}/${isEpd ? `?is_epd=true` : ""}`
+              )
+            }
           >
             {judul}
           </div>

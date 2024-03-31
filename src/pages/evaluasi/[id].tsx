@@ -14,6 +14,7 @@ import CardEvaluasi from "@components/Card/CardEvaluasi"
 import axios from "axios"
 import moment from "moment"
 import "moment/locale/id"
+import { useRouter } from "next/router"
 
 type Props = {
   idDiklat: number
@@ -26,6 +27,10 @@ const { Panel } = Collapse
 const Home: NextPage<Props> = (props: Props) => {
   const { user: esdm_survey, idDiklat } = props
   const [collapsed, setCollapsed] = useState<boolean>(false)
+  const router = useRouter()
+  const { is_epd } = router.query
+  console.log("is_epd", is_epd)
+
   const toggleCollapsed = () => {
     setCollapsed(!collapsed)
   }
@@ -64,6 +69,8 @@ const Home: NextPage<Props> = (props: Props) => {
           id_diklat: idDiklat,
           is_published: true,
           id_user: esdm_survey?.id,
+          pasca_diklat:
+            is_epd !== "undefined" && is_epd === "true" ? true : false,
         },
       })
       .then((res: any) => {
@@ -153,7 +160,7 @@ const Home: NextPage<Props> = (props: Props) => {
           </Collapse>
         </Col>
       </Row>
-      {totalSurveyPengajar > 0 && (
+      {totalSurveyPengajar > 0 && is_epd === undefined && (
         <Row>
           <Col span={24} className="px-4">
             {/* <div className="font-bold underline">Evaluasi Tenaga Pengajar</div> */}
@@ -179,6 +186,7 @@ const Home: NextPage<Props> = (props: Props) => {
 
                           return (
                             <CardEvaluasi
+                              key={v?.id}
                               id={v.id}
                               id_diklat={v.id_diklat}
                               id_kategori={v.id_kategori}
@@ -210,102 +218,108 @@ const Home: NextPage<Props> = (props: Props) => {
           </Col>
         </Row>
       )}
-      <Row>
-        <Col span={24} className="px-4 mt-4 mb-10">
-          <Collapse>
-            <Panel header="List Evaluasi/Survey" key="1">
-              <div className="flex flex-col gap-3 pt-4">
-                {!isEmpty(listSurvey.data) &&
-                  listSurvey.data.map((v: any, i: number) => {
-                    if (
-                      v?.is_multiple === false &&
-                      v?.is_epd === false &&
-                      v?.is_tracer === false
-                    ) {
-                      let status: any
-                      const isFinish = findIndex(hasAnswered, {
-                        id_evaluasi: v?.id,
-                      })
-                      if (isFinish >= 0) {
-                        status = "finished"
-                      } else if (v.total_terjawab > 0) {
-                        status = "pending"
-                      } else {
-                        status = "new"
-                      }
+      {is_epd === undefined && (
+        <Row>
+          <Col span={24} className="px-4 mt-4 mb-10">
+            <Collapse>
+              <Panel header="List Evaluasi/Survey" key="1">
+                <div className="flex flex-col gap-3 pt-4">
+                  {!isEmpty(listSurvey.data) &&
+                    listSurvey.data.map((v: any, i: number) => {
+                      if (
+                        v?.is_multiple === false &&
+                        v?.is_epd === false &&
+                        v?.is_tracer === false
+                      ) {
+                        let status: any
+                        const isFinish = findIndex(hasAnswered, {
+                          id_evaluasi: v?.id,
+                        })
+                        if (isFinish >= 0) {
+                          status = "finished"
+                        } else if (v.total_terjawab > 0) {
+                          status = "pending"
+                        } else {
+                          status = "new"
+                        }
 
-                      return (
-                        <CardEvaluasi
-                          id={v.id}
-                          id_diklat={v.id_diklat}
-                          id_kategori={v.id_kategori}
-                          id_master_diklat={v.id_master_diklat}
-                          title={v?.nmkategori}
-                          total_pertanyaan={v?.total_pertanyaan}
-                          userData={esdm_survey}
-                          fetchData={() => fetchData()}
-                          fetchHasSurveyData={() => fetchHasSurveyData()}
-                          nmkategori={v.nmkategori}
-                          status={status}
-                          totalTerjawab={v.total_terjawab}
-                          isTracer={v?.is_tracer}
-                          opening={v?.opening}
-                          closing={v?.closing}
-                        />
-                      )
-                    }
-                  })}
-              </div>
-            </Panel>
-          </Collapse>
-        </Col>
-      </Row>
-      <Row>
-        <Col span={24} className="px-4 mt-4 mb-10">
-          <Collapse>
-            <Panel header="Pasca Diklat" key="1">
-              <div className="flex flex-col gap-3 pt-4">
-                {!isEmpty(listSurvey.data) &&
-                  listSurvey.data.map((v: any, i: number) => {
-                    if (v?.is_epd === true || v?.is_tracer === true) {
-                      let status: any
-                      const isFinish = findIndex(hasAnswered, {
-                        id_evaluasi: v?.id,
-                      })
-                      if (isFinish >= 0) {
-                        status = "finished"
-                      } else if (v.total_terjawab > 0) {
-                        status = "pending"
-                      } else {
-                        status = "new"
+                        return (
+                          <CardEvaluasi
+                            key={v?.id}
+                            id={v.id}
+                            id_diklat={v.id_diklat}
+                            id_kategori={v.id_kategori}
+                            id_master_diklat={v.id_master_diklat}
+                            title={v?.nmkategori}
+                            total_pertanyaan={v?.total_pertanyaan}
+                            userData={esdm_survey}
+                            fetchData={() => fetchData()}
+                            fetchHasSurveyData={() => fetchHasSurveyData()}
+                            nmkategori={v.nmkategori}
+                            status={status}
+                            totalTerjawab={v.total_terjawab}
+                            isTracer={v?.is_tracer}
+                            opening={v?.opening}
+                            closing={v?.closing}
+                          />
+                        )
                       }
+                    })}
+                </div>
+              </Panel>
+            </Collapse>
+          </Col>
+        </Row>
+      )}
+      {is_epd !== "undefined" && is_epd === "true" && (
+        <Row>
+          <Col span={24} className="px-4 mb-10">
+            <Collapse defaultActiveKey={["1"]}>
+              <Panel header="Pasca Diklat" key="1">
+                <div className="flex flex-col gap-3 pt-4">
+                  {!isEmpty(listSurvey.data) &&
+                    listSurvey.data.map((v: any, i: number) => {
+                      if (v?.is_epd === true || v?.is_tracer === true) {
+                        let status: any
+                        const isFinish = findIndex(hasAnswered, {
+                          id_evaluasi: v?.id,
+                        })
+                        if (isFinish >= 0) {
+                          status = "finished"
+                        } else if (v.total_terjawab > 0) {
+                          status = "pending"
+                        } else {
+                          status = "new"
+                        }
 
-                      return (
-                        <CardEvaluasi
-                          id={v.id}
-                          id_diklat={v.id_diklat}
-                          id_kategori={v.id_kategori}
-                          id_master_diklat={v.id_master_diklat}
-                          title={v?.nmkategori}
-                          total_pertanyaan={v?.total_pertanyaan}
-                          userData={esdm_survey}
-                          fetchData={() => fetchData()}
-                          fetchHasSurveyData={() => fetchHasSurveyData()}
-                          nmkategori={v.nmkategori}
-                          status={status}
-                          totalTerjawab={v.total_terjawab}
-                          isTracer={v?.is_tracer}
-                          opening={v?.opening}
-                          closing={v?.closing}
-                        />
-                      )
-                    }
-                  })}
-              </div>
-            </Panel>
-          </Collapse>
-        </Col>
-      </Row>
+                        return (
+                          <CardEvaluasi
+                            key={v?.id}
+                            id={v.id}
+                            id_diklat={v.id_diklat}
+                            id_kategori={v.id_kategori}
+                            id_master_diklat={v.id_master_diklat}
+                            title={v?.nmkategori}
+                            total_pertanyaan={v?.total_pertanyaan}
+                            userData={esdm_survey}
+                            fetchData={() => fetchData()}
+                            fetchHasSurveyData={() => fetchHasSurveyData()}
+                            nmkategori={v.nmkategori}
+                            status={status}
+                            totalTerjawab={v.total_terjawab}
+                            isTracer={v?.is_tracer}
+                            opening={v?.opening}
+                            closing={v?.closing}
+                          />
+                        )
+                      }
+                    })}
+                </div>
+              </Panel>
+            </Collapse>
+          </Col>
+        </Row>
+      )}
       <Row className="fixed w-full h-4 bottom-5">
         <Col span={24}>
           <Footer />

@@ -1,21 +1,11 @@
-import {
-  Col,
-  Layout,
-  Row,
-  Dropdown,
-  Menu,
-  Space,
-  Drawer,
-  Button,
-  Modal,
-} from "antd"
+import { Col, Layout, Row, Menu, Drawer, Button, Modal } from "antd"
 import { FunctionComponent, useState } from "react"
 import {
   CaretRightOutlined,
   ExclamationCircleOutlined,
   HomeOutlined,
   LogoutOutlined,
-  MenuOutlined,
+  SafetyCertificateOutlined,
 } from "@ant-design/icons"
 import { useRouter } from "next/router"
 import Cookies from "js-cookie"
@@ -32,7 +22,10 @@ const HeaderLayout: FunctionComponent<Props> = (props: Props) => {
     userData: { nama_depan },
   } = props
   const router = useRouter()
+  const { route } = router
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false)
+
+  console.log("router", router.route)
 
   const logout: Function = async () => {
     await Cookies.remove("esdm_survey")
@@ -72,18 +65,32 @@ const HeaderLayout: FunctionComponent<Props> = (props: Props) => {
         <Row>
           <Col span={24} className="px-4 py-2 bg-black">
             <div className="flex justify-between">
-              <Button
-                type="primary"
-                ghost
-                icon={<HomeOutlined rev={null} />}
-                size="small"
-                className="flex items-center"
-                onClick={() => {
-                  window.location.replace("/")
-                }}
-              >
-                Dashboard
-              </Button>
+              <div className="flex flex-row gap-2">
+                <Button
+                  type="primary"
+                  ghost={route === "/" ? false : true}
+                  icon={<HomeOutlined rev={null} />}
+                  size="small"
+                  className="flex items-center"
+                  onClick={() => {
+                    window.location.replace("/")
+                  }}
+                >
+                  Diklat
+                </Button>
+                <Button
+                  type="primary"
+                  ghost={route === "/pasca-diklat" ? false : true}
+                  icon={<SafetyCertificateOutlined rev={null} />}
+                  size="small"
+                  className="flex items-center"
+                  onClick={() => {
+                    window.location.replace("/pasca-diklat")
+                  }}
+                >
+                  Pasca Diklat
+                </Button>
+              </div>
               <Button
                 type="link"
                 icon={<LogoutOutlined rev={null} />}
