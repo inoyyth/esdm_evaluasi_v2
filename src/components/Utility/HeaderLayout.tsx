@@ -78,7 +78,7 @@ const HeaderLayout: FunctionComponent<Props> = (props: Props) => {
                 >
                   Diklat
                 </Button>
-                <Button
+                {/* <Button
                   type="primary"
                   ghost={route === "/pasca-diklat" ? false : true}
                   icon={<SafetyCertificateOutlined rev={null} />}
@@ -89,7 +89,7 @@ const HeaderLayout: FunctionComponent<Props> = (props: Props) => {
                   }}
                 >
                   Pasca Diklat
-                </Button>
+                </Button> */}
               </div>
               <Button
                 type="link"

@@ -22,6 +22,7 @@ type Props = {
   metode_pelaksanaan: string
   detail_evaluasi?: any
   isEpd?: boolean
+  is_pasca_diklat?: boolean
 }
 
 const CardDiklat: FunctionComponent<Props> = (props: Props) => {
@@ -38,6 +39,7 @@ const CardDiklat: FunctionComponent<Props> = (props: Props) => {
     id_diklat,
     detail_evaluasi,
     isEpd = false,
+    is_pasca_diklat = false,
   } = props
   return (
     <Wrapper>
@@ -48,7 +50,9 @@ const CardDiklat: FunctionComponent<Props> = (props: Props) => {
             className="cursor-pointer"
             onClick={() =>
               window.location.replace(
-                `/evaluasi/${id_diklat}/${isEpd ? `?is_epd=true` : ""}`
+                `/evaluasi/${id_diklat}/${
+                  is_pasca_diklat ? `?is_epd=true` : ""
+                }`
               )
             }
           >

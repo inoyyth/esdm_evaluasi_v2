@@ -9,7 +9,6 @@ export default async function handler(
 ) {
   const cookies = new Cookies(req, res)
   if (req.method === "GET") {
-    console.log("env", process.env.API_URL)
     const {
       query: { pageSize, pageNumber, sortdatafield, sortorder },
     } = req

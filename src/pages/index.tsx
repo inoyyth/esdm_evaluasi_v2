@@ -11,7 +11,6 @@ import { useEffect, useState } from "react"
 import React from "react"
 import "antd/dist/antd.css"
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js"
-import { Doughnut } from "react-chartjs-2"
 import CardDiklat from "@components/Card/CardDiklat"
 import axios from "axios"
 
@@ -70,25 +69,24 @@ const Home: NextPage<Props> = (props: Props) => {
       })
   }
 
-  const fetchHasSurveyData: Function = async () => {
-    axios
-      .get("/api/answer", {
-        params: {
-          pageNumber: 1,
-          pageSize: 500,
-          sortdatafield: "id",
-          sortorder: "desc",
-          id_user: esdm_survey?.id,
-        },
-      })
-      .then((res: any) => {
-        setHasAnswered(res?.data?.data)
-      })
-  }
+  // const fetchHasSurveyData: Function = async () => {
+  //   axios
+  //     .get("/api/answer", {
+  //       params: {
+  //         pageNumber: 1,
+  //         pageSize: 500,
+  //         sortdatafield: "id",
+  //         sortorder: "desc",
+  //         id_user: esdm_survey?.id,
+  //       },
+  //     })
+  //     .then((res: any) => {
+  //       setHasAnswered(res?.data?.data)
+  //     })
+  // }
 
   useEffect(() => {
     fetchData()
-    fetchHasSurveyData()
   }, [])
 
   return (
@@ -122,7 +120,9 @@ const Home: NextPage<Props> = (props: Props) => {
           </div>
           <div className="flex flex-col gap-4">
             {listSurvey.data.map((v: any, i: number) => {
-              return <CardDiklat key={i} {...v} />
+              if (v?.is_show) {
+                return <CardDiklat key={i} {...v} />
+              }
             })}
           </div>
         </Col>
